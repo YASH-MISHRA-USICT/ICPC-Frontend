@@ -7,11 +7,9 @@ import { LoadingSpinner } from '../UI/LoadingSpinner';
 // Available coding tracks/teams (you can move this to a config file)
 const AVAILABLE_TRACKS = [
   { id: 'webdev', name: 'Web Development' },
-  { id: 'backend', name: 'Backend Development' },
-  { id: 'fullstack', name: 'Full Stack Development' },
-  { id: 'mobile', name: 'Mobile Development' },
-  { id: 'devops', name: 'DevOps & Cloud' },
-  { id: 'data', name: 'Data Science & AI' },
+  { id: 'app', name: 'App Development' },
+  { id: 'ai', name: 'Data Science & AI' },
+  { id: 'dsa', name: 'Data Structures & Algorithms' }
 ];
 
 interface ProfileData {
@@ -109,6 +107,11 @@ export function ProfilePage() {
       setError(null);
       setSuccess(null);
 
+      // Check if coding track has changed
+      const originalTrack = profile.profile?.coding_track || '';
+      const newTrack = formData.coding_track || '';
+      const trackChanged = originalTrack !== newTrack;
+
       // Prepare the updated profile data
       const updatedProfile = {
         ...profile,
@@ -122,16 +125,26 @@ export function ProfilePage() {
 
       if (response.success) {
         setProfile(response.data);
-        setSuccess('Profile updated successfully!');
-        setEditing(false);
-        // Clear success message after 3 seconds
-        setTimeout(() => setSuccess(null), 3000);
+        
+        // If coding track changed, show different message and refresh
+        if (trackChanged) {
+          setSuccess('Coding track updated! Refreshing page...');
+          setEditing(false);
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        } else {
+          setSuccess('Profile updated successfully!');
+          setEditing(false);
+          // Clear success message after 3 seconds for other changes
+          setTimeout(() => setSuccess(null), 3000);
+        }
       } else {
         setError(response.error || 'Failed to update profile');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error updating profile:', error);
-      setError(error.message || 'Failed to update profile');
+      setError(error instanceof Error ? error.message : 'Failed to update profile');
     } finally {
       setLoading(false);
     }
@@ -514,11 +527,21 @@ export function ProfilePage() {
 
               {/* Badges Section */}
               <div className="mt-8">
-                <h3 className="text-md font-semibold text-gray-900 mb-4 flex items-center">
-                  <Award className="w-5 h-5 mr-2 text-yellow-500" />
-                  Badges & Achievements
-                </h3>
-                <BadgesSection userId={user.id} />
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-md font-semibold text-gray-900 flex items-center">
+                    <Award className="w-5 h-5 mr-2 text-yellow-500" />
+                    Badges & Achievements
+                  </h3>
+                  <button 
+                    onClick={() => window.location.href = '/badges'}
+                    className="text-xs text-blue-600 hover:text-blue-800 transition-colors"
+                  >
+                    View All
+                  </button>
+                </div>
+                <div className="w-full overflow-hidden">
+                  <BadgesSection userId={user.id} />
+                </div>
               </div>
             </div>
           </div>
@@ -574,20 +597,24 @@ function BadgesSection({ userId }: { userId: string }) {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 gap-3 w-full">
       {badges.map((badge) => (
-        <div key={badge.id} className="bg-white p-4 rounded-lg border border-gray-200 text-center hover:shadow-md transition-shadow">
-          <div 
-            className="text-3xl mb-2"
-            style={{ color: badge.color }}
-          >
-            {badge.icon}
+        <div key={badge.id} className="bg-white p-3 rounded-lg border border-gray-200 hover:shadow-md transition-shadow min-h-0 w-full">
+          <div className="flex items-start space-x-3">
+            <div 
+              className="text-xl flex-shrink-0"
+              style={{ color: badge.color }}
+            >
+              {badge.icon}
+            </div>
+            <div className="flex-1 min-w-0">
+              <h4 className="font-semibold text-xs text-gray-900 mb-1 truncate">{badge.name}</h4>
+              <p className="text-xs text-gray-500 mb-1 line-clamp-2">{badge.description}</p>
+              <p className="text-xs text-gray-400">
+                {new Date(badge.earned_at).toLocaleDateString()}
+              </p>
+            </div>
           </div>
-          <h4 className="font-semibold text-sm text-gray-900 mb-1">{badge.name}</h4>
-          <p className="text-xs text-gray-500 mb-2">{badge.description}</p>
-          <p className="text-xs text-gray-400">
-            {new Date(badge.earned_at).toLocaleDateString()}
-          </p>
         </div>
       ))}
     </div>
