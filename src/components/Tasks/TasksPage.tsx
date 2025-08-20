@@ -377,7 +377,7 @@ export function TasksPage() {
                       
                       {submission.submission_url && (
                         <a
-                          href='https://{submission.submission_url}'
+                          href={`https://${submission.submission_url}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-600 hover:text-blue-700 flex items-center justify-end space-x-1 text-sm mb-1"
