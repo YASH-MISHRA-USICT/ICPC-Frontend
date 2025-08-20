@@ -191,10 +191,10 @@ export function ProfilePage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+  <div className="max-w-4xl mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8">
+  <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-8">
+  <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-4 sm:px-6 py-6 sm:py-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center overflow-hidden">
@@ -211,9 +211,9 @@ export function ProfilePage() {
                 )}
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white">{user.name}</h1>
-                <p className="text-blue-100">{user.email}</p>
-                <div className="flex items-center space-x-2 mt-2">
+                <h1 className="text-xl sm:text-2xl font-bold text-white">{user.name}</h1>
+                <p className="text-blue-100 text-sm sm:text-base">{user.email}</p>
+                <div className="flex flex-wrap items-center gap-2 mt-2">
                   {formData.coding_track && (
                     <span className="bg-white/20 text-white px-3 py-1 rounded-full text-sm">
                       {AVAILABLE_TRACKS.find(t => t.id === formData.coding_track)?.name || formData.coding_track}
@@ -228,7 +228,7 @@ export function ProfilePage() {
             <button
               onClick={() => editing ? handleCancel() : setEditing(true)}
               disabled={loading}
-              className="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors disabled:opacity-50"
+              className="bg-white/20 hover:bg-white/30 text-white px-3 py-2 rounded-lg flex items-center space-x-2 transition-colors disabled:opacity-50 text-sm sm:text-base"
             >
               {editing ? <X className="w-4 h-4" /> : <Edit2 className="w-4 h-4" />}
               <span>{editing ? 'Cancel' : 'Edit Profile'}</span>
@@ -237,7 +237,7 @@ export function ProfilePage() {
         </div>
 
         {/* Content */}
-        <div className="p-6">
+  <div className="p-3 sm:p-6">
           {/* Success/Error Messages */}
           {success && (
             <div className="mb-6 p-4 bg-green-100 border border-green-300 text-green-700 rounded-lg">
@@ -251,12 +251,12 @@ export function ProfilePage() {
             </div>
           )}
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8">
             {/* Profile Information */}
             <div className="lg:col-span-2">
-              <h2 className="text-lg font-semibold text-gray-900 mb-6">Profile Information</h2>
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">Profile Information</h2>
               
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     <User className="w-4 h-4 inline mr-2" />
@@ -286,7 +286,9 @@ export function ProfilePage() {
                       onChange={(e) => handleInputChange('coding_track', e.target.value)}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
-                      <option value="">Select a coding track</option>
+                      <option value="" disabled hidden>
+                        Select a coding track
+                      </option>
                       {AVAILABLE_TRACKS.map((track) => (
                         <option key={track.id} value={track.id}>
                           {track.name}
@@ -337,7 +339,7 @@ export function ProfilePage() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Course/Major
@@ -434,11 +436,11 @@ export function ProfilePage() {
                 </div>
 
                 {editing && (
-                  <div className="flex space-x-4 pt-4">
+                  <div className="flex flex-col sm:flex-row gap-2 sm:space-x-4 pt-4">
                     <button
                       onClick={handleSave}
                       disabled={loading}
-                      className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                     >
                       <Save className="w-4 h-4" />
                       <span>{loading ? 'Saving...' : 'Save Changes'}</span>
@@ -446,7 +448,7 @@ export function ProfilePage() {
                     <button
                       onClick={handleCancel}
                       disabled={loading}
-                      className="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 transition-colors disabled:opacity-50"
+                      className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors disabled:opacity-50 text-sm sm:text-base"
                     >
                       Cancel
                     </button>
@@ -457,24 +459,23 @@ export function ProfilePage() {
 
             {/* Stats Sidebar */}
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-6">Account Statistics</h2>
-              
-              <div className="space-y-4">
-                <div className="bg-gray-50 p-4 rounded-lg">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">Account Statistics</h2>
+              <div className="space-y-3 sm:space-y-4">
+                <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">Google ID</span>
                     <span className="font-mono text-xs text-gray-900">{user.google_id.slice(-8)}</span>
                   </div>
                 </div>
 
-                <div className="bg-gray-50 p-4 rounded-lg">
+                <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">Login Count</span>
                     <span className="font-semibold text-gray-900">{user.login_count}</span>
                   </div>
                 </div>
 
-                <div className="bg-gray-50 p-4 rounded-lg">
+                <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">Account Created</span>
                     <span className="font-semibold text-gray-900">
@@ -483,7 +484,7 @@ export function ProfilePage() {
                   </div>
                 </div>
 
-                <div className="bg-gray-50 p-4 rounded-lg">
+                <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">Last Login</span>
                     <span className="font-semibold text-gray-900">
@@ -492,7 +493,7 @@ export function ProfilePage() {
                   </div>
                 </div>
 
-                <div className="bg-gray-50 p-4 rounded-lg">
+                <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">Email Status</span>
                     <span className={`font-semibold ${
@@ -505,10 +506,10 @@ export function ProfilePage() {
               </div>
 
               {/* Profile Picture Section */}
-              <div className="mt-8">
-                <h3 className="text-md font-semibold text-gray-900 mb-4">Profile Picture</h3>
-                <div className="bg-gray-50 p-4 rounded-lg text-center">
-                  <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden">
+              <div className="mt-6 sm:mt-8">
+                <h3 className="text-md font-semibold text-gray-900 mb-3 sm:mb-4">Profile Picture</h3>
+                <div className="bg-gray-50 p-3 sm:p-4 rounded-lg text-center">
+                  <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3 overflow-hidden">
                     {user.picture ? (
                       <img 
                         src={user.picture} 
@@ -526,8 +527,8 @@ export function ProfilePage() {
               </div>
 
               {/* Badges Section */}
-              <div className="mt-8">
-                <div className="flex items-center justify-between mb-4">
+              <div className="mt-6 sm:mt-8">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 sm:mb-4 gap-2">
                   <h3 className="text-md font-semibold text-gray-900 flex items-center">
                     <Award className="w-5 h-5 mr-2 text-yellow-500" />
                     Badges & Achievements

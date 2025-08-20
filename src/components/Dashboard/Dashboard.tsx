@@ -210,19 +210,19 @@ export function Dashboard() {
   const progressPercentage = stats.totalTasks > 0 ? (stats.completedTasks / stats.totalTasks) * 100 : 0;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">
+  <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
           Welcome back, {user.name}!
         </h1>
-        <p className="text-gray-600 mt-2">
+        <p className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base">
           {user.email} • {stats.completedTasks} tasks completed
         </p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
+  <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Total Points</p>
@@ -234,7 +234,7 @@ export function Dashboard() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+  <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Completed Tasks</p>
@@ -246,7 +246,7 @@ export function Dashboard() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+  <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Pending Tasks</p>
@@ -258,7 +258,7 @@ export function Dashboard() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+  <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Badges Earned</p>
@@ -272,69 +272,69 @@ export function Dashboard() {
       </div>
 
       {/* Progress Section */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900">Weekly Progress</h2>
-          <span className="text-sm text-gray-500">{Math.round(progressPercentage)}% Complete</span>
+  <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 mb-6 sm:mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 gap-1">
+          <h2 className="text-base sm:text-lg font-semibold text-gray-900">Weekly Progress</h2>
+          <span className="text-xs sm:text-sm text-gray-500">{Math.round(progressPercentage)}% Complete</span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
+  <div className="w-full bg-gray-200 rounded-full h-2 sm:h-3 mb-3 sm:mb-4">
           <div
             className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-500"
             style={{ width: `${progressPercentage}%` }}
           />
         </div>
-        <div className="flex justify-between text-sm text-gray-600">
+        <div className="flex justify-between text-xs sm:text-sm text-gray-600">
           <span>{stats.completedTasks} completed</span>
           <span>{stats.totalTasks} total tasks</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+  <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
         {/* Recent Tasks */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-gray-900">Available Tasks</h2>
+  <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900">Available Tasks</h2>
             <BookOpen className="w-5 h-5 text-gray-400" />
           </div>
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {recentTasks.length > 0 ? (
               recentTasks.map((task) => (
-                <div key={task.id} className="flex items-center justify-between p-4 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors">
+                <div key={task.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors gap-1 sm:gap-0">
                   <div>
-                    <h3 className="font-medium text-gray-900">{task.title}</h3>
-                    <p className="text-sm text-gray-500">
+                    <h3 className="font-medium text-gray-900 text-sm sm:text-base">{task.title}</h3>
+                    <p className="text-xs sm:text-sm text-gray-500">
                       Due: {new Date(task.due_date).toLocaleDateString()}
                     </p>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm font-medium text-blue-600">{task.points} pts</span>
+                  <div className="flex items-center space-x-2 mt-2 sm:mt-0">
+                    <span className="text-xs sm:text-sm font-medium text-blue-600">{task.points} pts</span>
                     <Calendar className="w-4 h-4 text-gray-400" />
                   </div>
                 </div>
               ))
             ) : (
-              <p className="text-gray-500 text-center py-8">No tasks available</p>
+              <p className="text-gray-500 text-center py-6 sm:py-8 text-sm">No tasks available</p>
             )}
           </div>
         </div>
 
         {/* Recent Submissions */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-gray-900">Recent Submissions</h2>
+  <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900">Recent Submissions</h2>
             <Target className="w-5 h-5 text-gray-400" />
           </div>
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {recentSubmissions.length > 0 ? (
               recentSubmissions.map((submission) => (
-                <div key={submission.id} className="flex items-center justify-between p-4 border border-gray-100 rounded-lg">
+                <div key={submission.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 border border-gray-100 rounded-lg gap-1 sm:gap-0">
                   <div>
-                    <h3 className="font-medium text-gray-900">{submission.task_title}</h3>
-                    <p className="text-sm text-gray-500">
+                    <h3 className="font-medium text-gray-900 text-sm sm:text-base">{submission.task_title}</h3>
+                    <p className="text-xs sm:text-sm text-gray-500">
                       Submitted: {new Date(submission.submitted_at).toLocaleDateString()}
                     </p>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 mt-2 sm:mt-0">
                     <span className={`px-2 py-1 text-xs font-medium rounded-full ${
                       submission.status === 'approved' ? 'bg-green-100 text-green-700' :
                       submission.status === 'rejected' ? 'bg-red-100 text-red-700' :
@@ -346,20 +346,20 @@ export function Dashboard() {
                 </div>
               ))
             ) : (
-              <p className="text-gray-500 text-center py-8">No submissions yet</p>
+              <p className="text-gray-500 text-center py-6 sm:py-8 text-sm">No submissions yet</p>
             )}
           </div>
         </div>
       </div>
 
       {/* User Info Section */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mt-8">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-semibold text-gray-900">Account Information</h2>
+  <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 mt-6 sm:mt-8">
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <h2 className="text-base sm:text-lg font-semibold text-gray-900">Account Information</h2>
           <User className="w-5 h-5 text-gray-400" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="text-center p-4 border border-gray-100 rounded-lg">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="text-center p-3 sm:p-4 border border-gray-100 rounded-lg">
             <img 
               src={user.picture} 
               alt={user.name}
@@ -368,7 +368,7 @@ export function Dashboard() {
             <h3 className="font-medium text-gray-900 text-sm">{user.name}</h3>
             <p className="text-xs text-gray-500 mt-1">{user.email}</p>
           </div>
-          <div className="text-center p-4 border border-gray-100 rounded-lg">
+          <div className="text-center p-3 sm:p-4 border border-gray-100 rounded-lg">
             <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
               <Calendar className="w-6 h-6 text-blue-600" />
             </div>
@@ -377,7 +377,7 @@ export function Dashboard() {
               {new Date(user.created_at).toLocaleDateString()}
             </p>
           </div>
-          <div className="text-center p-4 border border-gray-100 rounded-lg">
+          <div className="text-center p-3 sm:p-4 border border-gray-100 rounded-lg">
             <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
               <CheckCircle className="w-6 h-6 text-green-600" />
             </div>
@@ -386,7 +386,7 @@ export function Dashboard() {
               {user.verified_email ? 'Verified' : 'Unverified'}
             </p>
           </div>
-          <div className="text-center p-4 border border-gray-100 rounded-lg">
+          <div className="text-center p-3 sm:p-4 border border-gray-100 rounded-lg">
             <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
               <Trophy className="w-6 h-6 text-purple-600" />
             </div>
