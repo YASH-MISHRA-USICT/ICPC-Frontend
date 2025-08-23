@@ -101,9 +101,11 @@ export function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/dashboard" className="flex items-center space-x-2">
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded-lg">
-                <Code2 className="h-6 w-6 text-white" />
-              </div>
+              <img
+                src="/logo.png"   // make sure logo.png is in /public
+                alt="Innoverse Logo"
+                className="w-10 h-10 rounded-xl"
+              />
               <span className="text-xl font-bold text-gray-900 dark:text-white">Innoverse</span>
             </Link>
           </div>

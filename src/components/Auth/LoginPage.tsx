@@ -72,8 +72,14 @@ export function LoginPage() {
           <div className="lg:w-1/2 flex items-center justify-center p-8 lg:p-12">
             <div className="max-w-md w-full">
               <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl mb-6">
-                  <Code2 className="w-8 h-8 text-white" />
+                <div className="flex justify-center mb-6">
+                  <img
+                    src="/logo.png"   // place logo.png inside public/
+                    alt="Innoverse Logo"
+                    width={64}
+                    height={64}
+                    className="rounded-2xl"
+                  />
                 </div>
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">
                   Welcome to <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Innoverse</span>
