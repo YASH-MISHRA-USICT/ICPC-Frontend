@@ -3,6 +3,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { apiService } from '../../lib/api';
 import { User, Mail, Calendar, Award, Users, Edit2, Save, X, Image } from 'lucide-react';
 import { LoadingSpinner } from '../UI/LoadingSpinner';
+import { useNavigate } from 'react-router-dom';
 
 // Available coding tracks/teams (you can move this to a config file)
 const AVAILABLE_TRACKS = [
@@ -23,6 +24,7 @@ interface ProfileData {
 
 export function ProfilePage() {
   const { user } = useAuth(); // Removed profile, getAuthHeader, updateProfile since we'll use apiService
+  const navigate = useNavigate();
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -575,19 +577,19 @@ export function ProfilePage() {
       {/* Footer Links */}
       <div className="mt-8 pt-6 border-t border-gray-200">
         <div className="flex flex-col sm:flex-row justify-center items-center gap-4 text-sm text-gray-500">
-          <a 
-            href="/privacy-policy" 
-            className="hover:text-gray-700 transition-colors underline"
+          <button 
+            onClick={() => window.open('/privacy-policy', '_blank')}
+            className="hover:text-gray-700 transition-colors underline bg-transparent border-none cursor-pointer"
           >
             Privacy Policy
-          </a>
+          </button>
           <span className="hidden sm:inline">•</span>
-          <a 
-            href="/terms-of-service" 
-            className="hover:text-gray-700 transition-colors underline"
+          <button 
+            onClick={() => window.open('/terms-of-service', '_blank')}
+            className="hover:text-gray-700 transition-colors underline bg-transparent border-none cursor-pointer"
           >
             Terms of Service
-          </a>
+          </button>
         </div>
       </div>
     </div>

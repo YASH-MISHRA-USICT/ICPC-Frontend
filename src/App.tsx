@@ -16,6 +16,8 @@ import { AdminPanel } from './components/Admin/AdminPanel';
 import { ShowcasePage } from './components/Showcase/ShowcasePage';
 import { MentorshipPage } from './components/Mentorship/MentorshipPage';
 import { SettingsPage } from './components/Settings/SettingsPage';
+import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
+import { TermsOfServicePage } from './pages/TermsOfServicePage';
 import { LoadingSpinner } from './components/UI/LoadingSpinner';
 
 // Main App Routes Component (needs to be inside AuthProvider)
@@ -23,47 +25,48 @@ function AppRoutes(): JSX.Element {
   const { user, profile, loading } = useAuth();
   const { theme } = useTheme(); // Initialize theme
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <LoadingSpinner size="large" />
-      </div>
-    );
-  }
-
-  if (!user) {
-    return <LoginPage />;
-  }
-
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
-        <main>
-          <Routes>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/teams" element={<TeamsPage />} />
-            <Route path="/tasks" element={<TasksPage />} />
-            <Route path="/leaderboard" element={<LeaderboardPage />} />
-            <Route path="/forum" element={<ForumPage />} />
-            <Route path="/resources" element={<ResourcesPage />} />
-            <Route path="/showcase" element={<ShowcasePage />} />
-            <Route path="/mentorship" element={<MentorshipPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            {profile?.role === 'admin' && (
-              <Route path="/admin" element={<AdminPanel />} />
-            )}
-
-            {/* Default redirect */}
-            <Route
-              path="*"
-              element={<Navigate to="/dashboard" replace />}
-            />
-          </Routes>
-        </main>
-      </div>
+      <Routes>
+        {/* Public routes - accessible without authentication */}
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+        
+        {/* Protected routes */}
+        <Route path="/*" element={
+          loading ? (
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+              <LoadingSpinner size="large" />
+            </div>
+          ) : !user ? (
+            <LoginPage />
+          ) : (
+            <div className="min-h-screen bg-gray-50">
+              <Navbar />
+              <main>
+                <Routes>
+                  <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/teams" element={<TeamsPage />} />
+                  <Route path="/tasks" element={<TasksPage />} />
+                  <Route path="/leaderboard" element={<LeaderboardPage />} />
+                  <Route path="/forum" element={<ForumPage />} />
+                  <Route path="/resources" element={<ResourcesPage />} />
+                  <Route path="/showcase" element={<ShowcasePage />} />
+                  <Route path="/mentorship" element={<MentorshipPage />} />
+                  <Route path="/settings" element={<SettingsPage />} />
+                  {profile?.role === 'admin' && (
+                    <Route path="/admin" element={<AdminPanel />} />
+                  )}
+                  {/* Default redirect */}
+                  <Route path="*" element={<Navigate to="/dashboard" replace />} />
+                </Routes>
+              </main>
+            </div>
+          )
+        } />
+      </Routes>
     </Router>
   );
 }

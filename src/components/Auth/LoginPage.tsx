@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google'; // Updated import
+import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
 import { Code2, Users, Trophy, BookOpen, Sparkles } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -66,8 +66,8 @@ export function LoginPage() {
 
   return (
     <GoogleOAuthProvider clientId="807933972774-hlrmlpk5v7aac3tn9ppror2i3irigr7q.apps.googleusercontent.com">
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-        <div className="flex flex-col lg:flex-row min-h-screen">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex flex-col">
+        <div className="flex flex-col lg:flex-row flex-1">
           {/* Left Panel - Hero Section */}
           <div className="lg:w-1/2 flex items-center justify-center p-8 lg:p-12">
             <div className="max-w-md w-full">
@@ -147,17 +147,21 @@ export function LoginPage() {
         </div>
         
         {/* Footer Links */}
-        <div className="absolute bottom-0 left-0 right-0 py-6 bg-white/70 backdrop-blur-sm border-t border-gray-200">
+        <div className="py-6 bg-white/70 backdrop-blur-sm border-t border-gray-200">
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 text-sm text-gray-500">
             <a 
-              href="/privacy-policy" 
+              href="/privacy-policy"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hover:text-gray-700 transition-colors underline"
             >
               Privacy Policy
             </a>
             <span className="hidden sm:inline">•</span>
             <a 
-              href="/terms-of-service" 
+              href="/terms-of-service"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hover:text-gray-700 transition-colors underline"
             >
               Terms of Service
