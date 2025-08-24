@@ -145,6 +145,25 @@ export function LoginPage() {
             </div>
           </div>
         </div>
+        
+        {/* Footer Links */}
+        <div className="absolute bottom-0 left-0 right-0 py-6 bg-white/70 backdrop-blur-sm border-t border-gray-200">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 text-sm text-gray-500">
+            <a 
+              href="/privacy-policy" 
+              className="hover:text-gray-700 transition-colors underline"
+            >
+              Privacy Policy
+            </a>
+            <span className="hidden sm:inline">•</span>
+            <a 
+              href="/terms-of-service" 
+              className="hover:text-gray-700 transition-colors underline"
+            >
+              Terms of Service
+            </a>
+          </div>
+        </div>
       </div>
     </GoogleOAuthProvider>
   );
