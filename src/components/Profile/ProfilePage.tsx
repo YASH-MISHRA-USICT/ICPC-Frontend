@@ -214,11 +214,6 @@ export function ProfilePage() {
                 <h1 className="text-xl sm:text-2xl font-bold text-white">{user.name}</h1>
                 <p className="text-blue-100 text-sm sm:text-base">{user.email}</p>
                 <div className="flex flex-wrap items-center gap-2 mt-2">
-                  {formData.coding_track && (
-                    <span className="bg-white/20 text-white px-3 py-1 rounded-full text-sm">
-                      {AVAILABLE_TRACKS.find(t => t.id === formData.coding_track)?.name || formData.coding_track}
-                    </span>
-                  )}
                   <span className="bg-white/20 text-white px-3 py-1 rounded-full text-sm">
                     {user.verified_email ? 'Verified' : 'Unverified'}
                   </span>
@@ -278,30 +273,58 @@ export function ProfilePage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     <Users className="w-4 h-4 inline mr-2" />
-                    Coding Track
+                    Coding Tracks
                   </label>
                   {editing ? (
-                    <select
-                      value={formData.coding_track}
-                      onChange={(e) => handleInputChange('coding_track', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                      <option value="" disabled hidden>
-                        Select a coding track
-                      </option>
-                      {AVAILABLE_TRACKS.map((track) => (
-                        <option key={track.id} value={track.id}>
-                          {track.name}
-                        </option>
-                      ))}
-                    </select>
+                    <div className="space-y-2">
+                      {AVAILABLE_TRACKS.map((track) => {
+                        const selectedTracks = formData.coding_track ? formData.coding_track.split(',') : [];
+                        const isChecked = selectedTracks.includes(track.id);
+                        
+                        return (
+                          <label key={track.id} className="flex items-center space-x-2 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={(e) => {
+                                const currentTracks = formData.coding_track ? formData.coding_track.split(',') : [];
+                                let updatedTracks;
+                                
+                                if (e.target.checked) {
+                                  // Add track if checked
+                                  updatedTracks = [...currentTracks, track.id];
+                                } else {
+                                  // Remove track if unchecked
+                                  updatedTracks = currentTracks.filter(id => id !== track.id);
+                                }
+                                
+                                handleInputChange('coding_track', updatedTracks.join(','));
+                              }}
+                              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            />
+                            <span className="text-sm text-gray-700">{track.name}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
                   ) : (
-                    <p className="text-gray-900">
-                      {formData.coding_track 
-                        ? AVAILABLE_TRACKS.find(t => t.id === formData.coding_track)?.name || formData.coding_track
-                        : 'Not selected'
-                      }
-                    </p>
+                    <div className="space-y-1">
+                      {formData.coding_track ? (
+                        formData.coding_track
+                          .split(',')
+                          .map(id => AVAILABLE_TRACKS.find(t => t.id === id)?.name || id)
+                          .map((trackName, index) => (
+                            <span
+                              key={index}
+                              className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mr-2 mb-1"
+                            >
+                              {trackName}
+                            </span>
+                          ))
+                      ) : (
+                        <p className="text-gray-500">Not selected</p>
+                      )}
+                    </div>
                   )}
                 </div>
 
@@ -546,6 +569,25 @@ export function ProfilePage() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      
+      {/* Footer Links */}
+      <div className="mt-8 pt-6 border-t border-gray-200">
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-4 text-sm text-gray-500">
+          <a 
+            href="/privacy-policy" 
+            className="hover:text-gray-700 transition-colors underline"
+          >
+            Privacy Policy
+          </a>
+          <span className="hidden sm:inline">•</span>
+          <a 
+            href="/terms-of-service" 
+            className="hover:text-gray-700 transition-colors underline"
+          >
+            Terms of Service
+          </a>
         </div>
       </div>
     </div>
