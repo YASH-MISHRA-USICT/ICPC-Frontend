@@ -25,36 +25,59 @@ export function LeaderboardPage() {
   const [leaderboard, setLeaderboard] = useState<Profile[]>([]);
   const [teamLeaderboard, setTeamLeaderboard] = useState<TeamLeaderboard[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'individual' | 'team'>('individual');
 
   useEffect(() => {
     fetchLeaderboardData();
   }, []);
 
-  const fetchLeaderboardData = async () => {
-    try {
-      // Fetch individual leaderboard
-      const leaderboardResponse = await apiService.getLeaderboard();
-      if (leaderboardResponse.success) {
-        setLeaderboard(leaderboardResponse.data || []);
-      }
-
-      // Fetch team leaderboard
-      const teamLeaderboardResponse = await apiService.getTeamLeaderboard();
-      if (teamLeaderboardResponse.success) {
-        setTeamLeaderboard(teamLeaderboardResponse.data || []);
-      }
-    } catch (error) {
-      console.error('Error fetching leaderboard data:', error);
-    } finally {
-      setLoading(false);
+const fetchLeaderboardData = async () => {
+  setLoading(true);
+  setError(null);
+  try {
+    const leaderboardResponse = await apiService.getLeaderboard();
+    if (leaderboardResponse.success) {
+      // Use the "items" array from backend
+      const items = leaderboardResponse.data?.items || [];
+      // Map them into your Profile interface
+      const mapped = items.map((u: any) => ({
+        id: u.id,  // backend sends "id"
+        full_name: u.full_name, // backend sends "full_name"
+        total_points: u.total_points, // backend sends "total_points"
+        tasks_completed: u.tasks_completed,
+        team: u.team ? { name: u.team.name, color: u.team.color } : undefined
+      }));
+      setLeaderboard(mapped);
+    } else {
+      setError(leaderboardResponse.error || 'Failed to fetch individual leaderboard');
     }
-  };
+  } catch (err: any) {
+    setError(err.message || 'Error fetching leaderboard data');
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <LoadingSpinner size="large" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center">
+        <div className="text-red-600 mb-4">{error}</div>
+        <button
+          onClick={fetchLeaderboardData}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+        >
+          Retry
+        </button>
       </div>
     );
   }
@@ -106,7 +129,9 @@ export function LeaderboardPage() {
           </div>
           
           <div className="divide-y divide-gray-100">
-            {leaderboard.map((profile, index) => (
+            {leaderboard.length === 0 ? (
+              <div className="px-6 py-8 text-center text-gray-500">No data available.</div>
+            ) : leaderboard.map((profile, index) => (
               <div key={profile.id} className="px-6 py-4 flex items-center space-x-4 hover:bg-gray-50 transition-colors">
                 <div className="flex-shrink-0">
                   {getRankIcon(index + 1)}
@@ -153,7 +178,9 @@ export function LeaderboardPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {teamLeaderboard.map((team, index) => (
+          {teamLeaderboard.length === 0 ? (
+            <div className="col-span-full text-center text-gray-500 py-8">No team data available.</div>
+          ) : teamLeaderboard.map((team, index) => (
             <div key={team.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">
