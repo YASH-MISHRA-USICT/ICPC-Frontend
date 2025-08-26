@@ -1,5 +1,5 @@
 // lib/api.ts - API service utility
-const API_BASE_URL = 'https://innoverse-real-backed.onrender.com/';
+const API_BASE_URL = 'http://localhost:5000';
 
 interface ApiResponse<T = any> {
   success: boolean;

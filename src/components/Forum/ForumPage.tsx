@@ -199,7 +199,7 @@ export function ForumPage() {
                                 {new Date(c.created_at).toLocaleString()}
                               </span>
                             </div>
-                            <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                            <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
                               {c.content}
                             </p>
                           </div>
