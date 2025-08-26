@@ -29,7 +29,7 @@ interface Notification {
 }
 
 export function Navbar() {
-  const { user, profile, signOut } = useAuth();
+  const { user, signOut } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -43,11 +43,8 @@ export function Navbar() {
     navigate('/');
   };
 
-  // Load notifications on component mount
   useEffect(() => {
-    if (user) {
-      loadNotifications();
-    }
+    if (user) loadNotifications();
   }, [user]);
 
   const loadNotifications = async () => {
@@ -55,7 +52,7 @@ export function Navbar() {
       const response = await apiService.getNotifications();
       if (response.success) {
         setNotifications(response.data || []);
-        const unread = (response.data || []).filter((notif: Notification) => !notif.read).length;
+        const unread = (response.data || []).filter((n: Notification) => !n.read).length;
         setUnreadCount(unread);
       }
     } catch (error) {
@@ -63,22 +60,15 @@ export function Navbar() {
     }
   };
 
-  const handleMarkNotificationRead = async (notificationId: string) => {
+  const handleMarkNotificationRead = async (id: string) => {
     try {
-      const response = await apiService.markNotificationRead(notificationId);
-      if (response.success) {
-        // Update the notification in state
-        setNotifications(prev => 
-          prev.map(notif => 
-            notif.id === notificationId 
-              ? { ...notif, read: true }
-              : notif
-          )
-        );
+      const res = await apiService.markNotificationRead(id);
+      if (res.success) {
+        setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
         setUnreadCount(prev => Math.max(0, prev - 1));
       }
-    } catch (error) {
-      console.error('Error marking notification as read:', error);
+    } catch (e) {
+      console.error('Error marking notification as read:', e);
     }
   };
 
@@ -96,25 +86,22 @@ export function Navbar() {
   }
 
   return (
-    <nav className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+    <nav className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-white/10 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
         <div className="flex justify-between h-16">
+          {/* Logo */}
           <div className="flex items-center">
             <Link to="/dashboard" className="flex items-center space-x-2">
-              <img
-                src="/logo.png"   // make sure logo.png is in /public
-                alt="Innoverse Logo"
-                className="w-10 h-10 rounded-xl"
-              />
-              <span className="text-xl font-bold text-gray-900 dark:text-white">Innoverse</span>
+              <img src="/logo.png" alt="Innoverse Logo" className="w-10 h-10 rounded-xl" />
+              <span className="text-xl font-bold text-gray-900 dark:text-gray-100">Innoverse</span>
             </Link>
           </div>
 
           {user && (
             <>
-              {/* Desktop Navigation */}
+              {/* Desktop nav */}
               <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
-                {navItems.map((item) => (
+                {navItems.map(item => (
                   <Link
                     key={item.name}
                     to={item.href}
@@ -126,21 +113,21 @@ export function Navbar() {
                 ))}
               </div>
 
-              {/* User Menu */}
+              {/* Actions */}
               <div className="flex items-center space-x-4">
-                <button 
+                {/* Theme toggle */}
+                <button
                   onClick={toggleTheme}
-                  className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
-                  title="Toggle theme"
+                  className="p-2 rounded-lg transition-colors text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                 </button>
 
                 {/* Notifications */}
                 <div className="relative">
-                  <button 
+                  <button
                     onClick={() => setIsNotificationOpen(!isNotificationOpen)}
-                    className="relative p-2 text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                    className="relative p-2 rounded-lg transition-colors text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
                     <Bell className="h-5 w-5" />
                     {unreadCount > 0 && (
@@ -151,42 +138,38 @@ export function Navbar() {
                   </button>
 
                   {isNotificationOpen && (
-                    <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-1 z-50 border border-gray-200 dark:border-gray-700 max-h-80 sm:max-h-96 overflow-y-auto">
-                      <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
-                        <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Notifications</h3>
+                    <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-white dark:bg-gray-800 border border-gray-200 dark:border-white/10 rounded-lg shadow-lg py-1 z-50 max-h-80 sm:max-h-96 overflow-y-auto">
+                      <div className="px-4 py-2 border-b border-gray-200 dark:border-white/10">
+                        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Notifications</h3>
                       </div>
-                      
                       {notifications.length === 0 ? (
                         <div className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 text-center">
                           No notifications
                         </div>
                       ) : (
-                        notifications.slice(0, 10).map((notification) => (
+                        notifications.slice(0, 10).map(n => (
                           <div
-                            key={notification.id}
-                            className={`px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer border-l-4 ${
-                              notification.read 
-                                ? 'border-transparent' 
+                            key={n.id}
+                            onClick={() => handleMarkNotificationRead(n.id)}
+                            className={`px-4 py-3 cursor-pointer transition-colors border-l-4 ${
+                              n.read
+                                ? 'border-transparent hover:bg-gray-50 dark:hover:bg-gray-700'
                                 : 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
                             }`}
-                            onClick={() => handleMarkNotificationRead(notification.id)}
                           >
-                            <p className="text-sm text-gray-900 dark:text-white">
-                              {notification.message}
-                            </p>
+                            <p className="text-sm text-gray-900 dark:text-gray-100">{n.message}</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                              {new Date(notification.created_at).toLocaleDateString()}
+                              {new Date(n.created_at).toLocaleDateString()}
                             </p>
                           </div>
                         ))
                       )}
-                      
                       {notifications.length > 10 && (
-                        <div className="px-4 py-2 border-t border-gray-200 dark:border-gray-700">
+                        <div className="px-4 py-2 border-t border-gray-200 dark:border-white/10">
                           <Link
                             to="/notifications"
-                            className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
                             onClick={() => setIsNotificationOpen(false)}
+                            className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
                           >
                             View all notifications
                           </Link>
@@ -196,6 +179,7 @@ export function Navbar() {
                   )}
                 </div>
 
+                {/* Profile */}
                 <div className="relative">
                   <button
                     onClick={() => setIsProfileOpen(!isProfileOpen)}
@@ -203,52 +187,33 @@ export function Navbar() {
                   >
                     <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center overflow-hidden">
                       {user.picture ? (
-                        <img 
-                          src={user.picture} 
-                          alt={user.name}
-                          className="w-full h-full object-cover"
-                        />
+                        <img src={user.picture} alt={user.name} className="w-full h-full object-cover" />
                       ) : (
-                        <span className="text-white text-sm font-medium">
-                          {user.name?.charAt(0) || 'U'}
-                        </span>
+                        <span className="text-white text-sm font-medium">{user.name?.charAt(0) || 'U'}</span>
                       )}
                     </div>
                     <span className="hidden md:block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {user.name || 'User'}
+                      {user.name}
                     </span>
                   </button>
 
                   {isProfileOpen && (
-                    <div className="absolute right-0 mt-2 w-44 sm:w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-1 z-50 border border-gray-200 dark:border-gray-700 max-h-72 overflow-y-auto">
-                      <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
-                        <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                          {user.name}
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                          {user.email}
-                        </p>
+                    <div className="absolute right-0 mt-2 w-44 sm:w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-white/10 rounded-lg shadow-lg py-1 z-50">
+                      <div className="px-4 py-2 border-b border-gray-200 dark:border-white/10">
+                        <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{user.name}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
                       </div>
-                      
                       <Link
                         to="/profile"
-                        className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         onClick={() => setIsProfileOpen(false)}
+                        className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                       >
                         <User className="h-4 w-4" />
                         <span>Profile</span>
                       </Link>
-                      {/* <Link
-                        to="/settings"
-                        className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                        onClick={() => setIsProfileOpen(false)}
-                      >
-                        <Settings className="h-4 w-4" />
-                        <span>Settings</span>
-                      </Link> */}
                       <button
                         onClick={handleSignOut}
-                        className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 text-left"
+                        className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-left"
                       >
                         <LogOut className="h-4 w-4" />
                         <span>Sign Out</span>
@@ -270,17 +235,17 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile nav */}
       {isMenuOpen && user && (
-        <div className="md:hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+        <div className="md:hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-white/10">
           <div className="px-2 pt-2 pb-3 space-y-2">
-            {navItems.map((item) => (
+            {navItems.map(item => (
               <Link
                 key={item.name}
                 to={item.href}
-                className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-3 rounded-xl text-base font-semibold transition-colors"
-                style={{ minHeight: 48 }}
                 onClick={() => setIsMenuOpen(false)}
+                className="flex items-center space-x-3 px-4 py-3 rounded-xl text-base font-semibold transition-colors text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                style={{ minHeight: 48 }}
               >
                 <item.icon className="h-5 w-5" />
                 <span>{item.name}</span>
@@ -290,10 +255,10 @@ export function Navbar() {
         </div>
       )}
 
-      {/* Click outside to close dropdowns */}
+      {/* Click outside */}
       {(isProfileOpen || isNotificationOpen) && (
-        <div 
-          className="fixed inset-0 z-40" 
+        <div
+          className="fixed inset-0 z-40"
           onClick={() => {
             setIsProfileOpen(false);
             setIsNotificationOpen(false);

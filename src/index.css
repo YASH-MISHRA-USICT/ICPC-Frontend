@@ -2,25 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ========= BASE ========= */
 @layer base {
   html {
-    @apply transition-colors duration-300;
-  }
-  
-  body {
-    @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300;
+    color-scheme: light dark;
+    @apply transition-colors duration-200 ease-out;
   }
 
+  body {
+    /* darker page, lighter card for depth */
+    @apply bg-gray-50 text-gray-900 transition-colors duration-200 ease-out
+           dark:bg-gray-950 dark:text-gray-100;
+  }
+
+  /* avoid animating everything */
   * {
-    @apply transition-colors duration-200;
+    @apply transition-colors duration-150;
   }
 }
 
+/* ========= UTILITIES ========= */
 @layer utilities {
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+  .line-clamp-2{
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
   }
+
+  /* Surfaces */
+  .dark-card {
+    /* page uses gray-950; cards step up to 900 for contrast */
+    @apply bg-white border border-gray-200 shadow-sm
+           dark:bg-gray-900 dark:border-white/10 dark:shadow;
+  }
+
+  /* Text tokens */
+  .dark-text { @apply text-gray-900 dark:text-gray-100; }
+  .dark-text-secondary { @apply text-gray-600 dark:text-gray-400; }
+  .dark-text-muted { @apply text-gray-500 dark:text-gray-500; }
+
+  /* Links pop in dark mode */
+  .link { @apply text-blue-600 underline underline-offset-2 hover:no-underline; }
+  .dark .link { @apply text-blue-400; }
+
+  /* Hover surfaces */
+  .dark-hover { @apply hover:bg-gray-100 dark:hover:bg-gray-800/70; }
+
+  /* Dividers */
+  .divider { @apply border-t border-gray-200 dark:border-white/10; }
+
+  /* Focus ring (keyboard users) */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500
+           focus:ring-offset-2 focus:ring-offset-white
+           dark:focus:ring-offset-gray-950;
+  }
+
+  /* Badges (tone down neon for dark) */
+  .badge { @apply px-2 py-0.5 rounded-full text-xs font-medium border border-transparent; }
+  .badge-overdue   { @apply badge bg-red-500/15 text-red-600 dark:text-red-400 dark:border-red-500/20; }
+  .badge-individual{ @apply badge bg-purple-500/15 text-purple-600 dark:text-purple-400 dark:border-purple-500/20; }
+  .badge-beginner  { @apply badge bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 dark:border-emerald-500/20; }
+
+  /* Buttons */
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150; }
+  .btn-primary { @apply btn bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600; }
+  .btn-ghost { @apply btn bg-transparent text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800/70; }
 }
