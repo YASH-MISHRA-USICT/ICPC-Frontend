@@ -101,4 +101,98 @@
   .btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150; }
   .btn-primary { @apply btn bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600; }
   .btn-ghost { @apply btn bg-transparent text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800/70; }
+
+  /* Safe area support */
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .safe-left {
+    padding-left: env(safe-area-inset-left);
+  }
+  
+  .safe-right {
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Responsive text utilities */
+  .text-responsive-sm {
+    @apply text-sm tablet:text-base;
+  }
+  
+  .text-responsive-base {
+    @apply text-base tablet:text-lg;
+  }
+  
+  .text-responsive-lg {
+    @apply text-lg tablet:text-xl;
+  }
+
+  /* Container responsive padding */
+  .container-responsive {
+    @apply px-3 xs:px-4 tablet:px-6 laptop:px-8;
+  }
+
+  /* Responsive grid utilities */
+  .grid-responsive-cards {
+    @apply grid-cols-1 xs:grid-cols-2 tablet:grid-cols-3 laptop:grid-cols-4;
+  }
+
+  .grid-responsive-stats {
+    @apply grid-cols-2 tablet:grid-cols-4;
+  }
+
+  /* Touch-friendly button sizes */
+  .btn-touch {
+    @apply min-h-[44px] min-w-[44px] p-2 tablet:p-3;
+  }
+
+  /* Responsive spacing */
+  .space-responsive {
+    @apply space-y-4 tablet:space-y-6 laptop:space-y-8;
+  }
+
+  /* Improved tap targets for mobile */
+  .tap-target {
+    @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
+  }
+}
+
+/* Responsive font sizes */
+@media (max-width: 640px) {
+  .text-responsive {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-responsive {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .text-responsive {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+}
+
+/* iPad specific optimizations */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .navbar-tablet {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .content-tablet {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
 }

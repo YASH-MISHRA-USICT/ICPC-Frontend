@@ -300,15 +300,6 @@ export function TasksPage() {
                       {taskStatus.text}
                     </span>
                     
-                    {/* Task Type Badge */}
-                    <span className={`px-3 py-1.5 rounded-full text-sm font-medium border ${
-                      task.type === 'team' 
-                        ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700' 
-                        : 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-700'
-                    }`}>
-                      {task.type === 'team' ? '👥 Team' : '👤 Individual'}
-                    </span>
-                    
                     {/* Difficulty Badge */}
                     <span className={`px-3 py-1.5 rounded-full text-sm font-medium border ${
                       task.difficulty === 'beginner' ? 'bg-green-50 text-green-600 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700' :
@@ -327,7 +318,7 @@ export function TasksPage() {
                   </div>
                   
                   {/* Task Details Grid */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-700 dark:to-gray-600 rounded-xl border border-gray-200 dark:border-gray-600">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-xl">
                     {task.due_date && (
                       <div className="flex items-center space-x-2">
                         <div className="p-2 bg-blue-100 dark:bg-blue-900/40 rounded-lg">

@@ -38,6 +38,18 @@ export default {
           hover: 'var(--color-button-hover)',
         },
       },
+      screens: {
+        xs: '475px',
+        tablet: '768px',
+        laptop: '1024px',
+        desktop: '1280px',
+      },
+      spacing: {
+        'safe-top': 'env(safe-area-inset-top)',
+        'safe-bottom': 'env(safe-area-inset-bottom)',
+        'safe-left': 'env(safe-area-inset-left)',
+        'safe-right': 'env(safe-area-inset-right)',
+      },
     },
   },
   plugins: [],

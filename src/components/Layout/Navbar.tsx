@@ -90,37 +90,76 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center">
+          <div className="flex items-center flex-shrink-0">
             <Link to="/dashboard" className="flex items-center space-x-2">
-              <img src="/logo.png" alt="Innoverse Logo" className="w-10 h-10 rounded-xl" />
-              <span className="text-xl font-bold text-gray-900 dark:text-gray-100">Innoverse</span>
+              <img src="/logo.png" alt="Innoverse Logo" className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl" />
+              <span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 hidden xs:block">Innoverse</span>
             </Link>
           </div>
 
           {user && (
             <>
-              {/* Desktop nav */}
-              <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
+              {/* Desktop nav - hidden on smaller screens */}
+              <div className="hidden xl:flex items-center space-x-4 2xl:space-x-6">
                 {navItems.map(item => (
                   <Link
                     key={item.name}
                     to={item.href}
-                    className="flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-2 py-2 text-base font-medium rounded-lg transition-colors"
+                    className="flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-2 py-2 text-sm font-medium rounded-lg transition-colors"
                   >
-                    <item.icon className="h-5 w-5" />
-                    <span>{item.name}</span>
+                    <item.icon className="h-4 w-4" />
+                    <span className="hidden 2xl:block">{item.name}</span>
                   </Link>
                 ))}
               </div>
 
+              {/* Tablet nav - shown on medium to large screens */}
+              <div className="hidden md:flex xl:hidden items-center space-x-2">
+                {navItems.slice(0, 4).map(item => (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className="flex items-center justify-center p-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-colors"
+                    title={item.name}
+                  >
+                    <item.icon className="h-5 w-5" />
+                  </Link>
+                ))}
+                {navItems.length > 4 && (
+                  <div className="relative">
+                    <button
+                      onClick={() => setIsMenuOpen(!isMenuOpen)}
+                      className="flex items-center justify-center p-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-colors"
+                    >
+                      <Menu className="h-5 w-5" />
+                    </button>
+                    {isMenuOpen && (
+                      <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-white/10 rounded-lg shadow-lg py-1 z-50">
+                        {navItems.slice(4).map(item => (
+                          <Link
+                            key={item.name}
+                            to={item.href}
+                            onClick={() => setIsMenuOpen(false)}
+                            className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                          >
+                            <item.icon className="h-4 w-4" />
+                            <span>{item.name}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
               {/* Actions */}
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 sm:space-x-3">
                 {/* Theme toggle */}
                 <button
                   onClick={toggleTheme}
                   className="p-2 rounded-lg transition-colors text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                  {theme === 'dark' ? <Sun className="h-4 w-4 sm:h-5 sm:w-5" /> : <Moon className="h-4 w-4 sm:h-5 sm:w-5" />}
                 </button>
 
                 {/* Notifications */}
@@ -129,9 +168,9 @@ export function Navbar() {
                     onClick={() => setIsNotificationOpen(!isNotificationOpen)}
                     className="relative p-2 rounded-lg transition-colors text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
-                    <Bell className="h-5 w-5" />
+                    <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
                     {unreadCount > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center text-[10px] sm:text-xs">
                         {unreadCount > 9 ? '9+' : unreadCount}
                       </span>
                     )}
@@ -183,16 +222,16 @@ export function Navbar() {
                 <div className="relative">
                   <button
                     onClick={() => setIsProfileOpen(!isProfileOpen)}
-                    className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    className="flex items-center space-x-2 p-1 sm:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                   >
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center overflow-hidden">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center overflow-hidden">
                       {user.picture ? (
                         <img src={user.picture} alt={user.name} className="w-full h-full object-cover" />
                       ) : (
-                        <span className="text-white text-sm font-medium">{user.name?.charAt(0) || 'U'}</span>
+                        <span className="text-white text-xs sm:text-sm font-medium">{user.name?.charAt(0) || 'U'}</span>
                       )}
                     </div>
-                    <span className="hidden md:block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <span className="hidden lg:block text-sm font-medium text-gray-700 dark:text-gray-300 max-w-24 truncate">
                       {user.name}
                     </span>
                   </button>
@@ -210,6 +249,14 @@ export function Navbar() {
                       >
                         <User className="h-4 w-4" />
                         <span>Profile</span>
+                      </Link>
+                      <Link
+                        to="/settings"
+                        onClick={() => setIsProfileOpen(false)}
+                        className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                      >
+                        <Settings className="h-4 w-4" />
+                        <span>Settings</span>
                       </Link>
                       <button
                         onClick={handleSignOut}
@@ -238,14 +285,13 @@ export function Navbar() {
       {/* Mobile nav */}
       {isMenuOpen && user && (
         <div className="md:hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-white/10">
-          <div className="px-2 pt-2 pb-3 space-y-2">
+          <div className="px-2 pt-2 pb-3 space-y-1">
             {navItems.map(item => (
               <Link
                 key={item.name}
                 to={item.href}
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center space-x-3 px-4 py-3 rounded-xl text-base font-semibold transition-colors text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700"
-                style={{ minHeight: 48 }}
+                className="flex items-center space-x-3 px-3 py-3 rounded-xl text-base font-semibold transition-colors text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <item.icon className="h-5 w-5" />
                 <span>{item.name}</span>
