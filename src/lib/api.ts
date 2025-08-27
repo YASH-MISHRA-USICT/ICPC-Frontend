@@ -1,11 +1,23 @@
 // lib/api.ts - API service utility
-const API_BASE_URL = 'https://innoverse-real-backed.onrender.com';
+const API_BASE_URL = 'http://localhost:5000';
 
 interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
   error?: string;
   message?: string;
+}
+
+export interface Video {
+  _id: string;
+  title: string;
+  description: string;
+  youtubeId: string;
+  duration: string;
+  category: string;
+  views: number;
+  uploadDate: string;
+  isPublished: boolean;
 }
 
 class ApiService {
@@ -304,6 +316,19 @@ class ApiService {
   // Protected route example
   async getProtected(): Promise<ApiResponse<any>> {
     return this.makeRequest('/protected');
+  }
+
+  // Videos methods
+  async getVideos(): Promise<ApiResponse<Video[]>> {
+    return this.makeRequest('/videos');
+  }
+
+  async getVideo(videoId: string): Promise<ApiResponse<Video>> {
+    return this.makeRequest(`/videos/${videoId}`);
+  }
+
+  async getVideoCategories(): Promise<ApiResponse<string[]>> {
+    return this.makeRequest('/videos/categories');
   }
 }
 

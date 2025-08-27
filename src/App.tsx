@@ -12,6 +12,7 @@ import { TasksPage } from './components/Tasks/TasksPage';
 import { LeaderboardPage } from './components/Leaderboard/LeaderboardPage';
 import { ForumPage } from './components/Forum/ForumPage';
 import { ResourcesPage } from './components/Resources/ResourcesPage';
+import { VideosPage } from './components/Videos/VideosPage';
 import { AdminPanel } from './components/Admin/AdminPanel';
 import { ShowcasePage } from './components/Showcase/ShowcasePage';
 import { MentorshipPage } from './components/Mentorship/MentorshipPage';
@@ -55,6 +56,7 @@ function AppRoutes(): JSX.Element {
                   <Route path="/leaderboard" element={<LeaderboardPage />} />
                   <Route path="/forum" element={<ForumPage />} />
                   <Route path="/resources" element={<ResourcesPage />} />
+                  <Route path="/videos" element={<VideosPage />} />
                   <Route path="/showcase" element={<ShowcasePage />} />
                   <Route path="/mentorship" element={<MentorshipPage />} />
                   <Route path="/settings" element={<SettingsPage />} />

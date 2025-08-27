@@ -15,7 +15,8 @@ import {
   MessageSquare,
   Shield,
   Moon,
-  Sun
+  Sun,
+  Play as PlayIcon
 } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { useAuth } from '../../hooks/useAuth';
@@ -79,6 +80,7 @@ export function Navbar() {
     { name: 'Leaderboard', href: '/leaderboard', icon: Trophy },
     { name: 'Forum', href: '/forum', icon: MessageSquare },
     { name: 'Resources', href: '/resources', icon: BookOpen },
+    { name: 'Videos', href: '/videos', icon: PlayIcon },
   ];
 
   if (user?.role === 'admin') {
