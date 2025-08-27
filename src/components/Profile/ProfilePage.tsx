@@ -7,10 +7,10 @@ import { useNavigate } from 'react-router-dom';
 
 // Available coding tracks/teams (you can move this to a config file)
 const AVAILABLE_TRACKS = [
-  { id: 'webdev', name: 'Web Development' },
-  { id: 'app', name: 'App Development' },
-  { id: 'ai', name: 'Data Science & AI' },
-  { id: 'dsa', name: 'Data Structures & Algorithms' }
+  { id: 'webdev', name: 'Web Development', disabled: true },
+  { id: 'app', name: 'App Development', disabled: true },
+  { id: 'ai', name: 'Data Science & AI', disabled: true },
+  { id: 'dsa', name: 'Data Structures & Algorithms', disabled: false }
 ];
 
 interface ProfileData {
@@ -55,8 +55,11 @@ export function ProfilePage() {
         course: profile.profile.course || '',
         year: profile.profile.year || '',
         interests: profile.profile.interests || [],
-        coding_track: profile.profile.coding_track || '',
+        coding_track: profile.profile.coding_track || 'dsa', // Default to DSA
       });
+    } else {
+      // Set default DSA track for new profiles
+      setFormData(prev => ({ ...prev, coding_track: 'dsa' }));
     }
   }, [profile]);
 
@@ -137,7 +140,7 @@ export function ProfilePage() {
         course: profile.profile.course || '',
         year: profile.profile.year || '',
         interests: profile.profile.interests || [],
-        coding_track: profile.profile.coding_track || '',
+        coding_track: profile.profile.coding_track || 'dsa', // Default to DSA
       });
     }
     setEditing(false);
@@ -253,26 +256,34 @@ export function ProfilePage() {
                   {editing ? (
                     <div className="space-y-2">
                       {AVAILABLE_TRACKS.map((track) => {
-                        const selectedTracks = formData.coding_track ? formData.coding_track.split(',') : [];
+                        const selectedTracks = formData.coding_track ? formData.coding_track.split(',') : ['dsa'];
                         const isChecked = selectedTracks.includes(track.id);
                         return (
-                          <label key={track.id} className="flex items-center space-x-2 cursor-pointer">
+                          <label key={track.id} className={`flex items-center space-x-2 cursor-pointer ${track.disabled ? 'opacity-50 cursor-not-allowed' : ''}`}>
                             <input
                               type="checkbox"
                               checked={isChecked}
+                              disabled={track.disabled}
                               onChange={(e) => {
+                                if (track.disabled) return;
                                 const currentTracks = formData.coding_track ? formData.coding_track.split(',') : [];
                                 let updatedTracks;
                                 if (e.target.checked) updatedTracks = [...currentTracks, track.id];
                                 else updatedTracks = currentTracks.filter(id => id !== track.id);
                                 handleInputChange('coding_track', updatedTracks.join(','));
                               }}
-                              className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:bg-gray-700"
+                              className={`w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:bg-gray-700 ${track.disabled ? 'opacity-50' : ''}`}
                             />
-                            <span className="text-sm text-gray-700 dark:text-gray-300">{track.name}</span>
+                            <span className={`text-sm ${track.disabled ? 'text-gray-400 dark:text-gray-500' : 'text-gray-700 dark:text-gray-300'}`}>
+                              {track.name}
+                              {track.disabled && <span className="ml-2 text-xs">(Coming Soon)</span>}
+                            </span>
                           </label>
                         );
                       })}
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                        Currently, only Data Structures & Algorithms track is available. Other tracks will be launched soon!
+                      </p>
                     </div>
                   ) : (
                     <div className="space-y-1">
@@ -286,7 +297,9 @@ export function ProfilePage() {
                             </span>
                           ))
                       ) : (
-                        <p className="text-gray-500 dark:text-gray-400">Not selected</p>
+                        <span className="inline-block bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs px-2 py-1 rounded-full mr-2 mb-1">
+                          Data Structures & Algorithms
+                        </span>
                       )}
                     </div>
                   )}
