@@ -19,6 +19,7 @@ import { SettingsPage } from './components/Settings/SettingsPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsOfServicePage } from './pages/TermsOfServicePage';
 import { LoadingSpinner } from './components/UI/LoadingSpinner';
+import { Analytics } from "@vercel/analytics/next"
 
 // Main App Routes Component (needs to be inside AuthProvider)
 function AppRoutes(): JSX.Element {
@@ -56,6 +57,7 @@ function AppRoutes(): JSX.Element {
                   <Route path="/showcase" element={<ShowcasePage />} />
                   <Route path="/mentorship" element={<MentorshipPage />} />
                   <Route path="/settings" element={<SettingsPage />} />
+                  <Analytics />
                   {profile?.role === 'admin' && (
                     <Route path="/admin" element={<AdminPanel />} />
                   )}
