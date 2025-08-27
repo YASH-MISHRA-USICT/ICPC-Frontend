@@ -44,6 +44,7 @@ function AppRoutes(): JSX.Element {
           ) : (
             <div className="min-h-screen bg-gray-50">
               <Navbar />
+              <Analytics />
               <main>
                 <Routes>
                   <Route path="/" element={<Navigate to="/dashboard" replace />} />
@@ -57,7 +58,6 @@ function AppRoutes(): JSX.Element {
                   <Route path="/showcase" element={<ShowcasePage />} />
                   <Route path="/mentorship" element={<MentorshipPage />} />
                   <Route path="/settings" element={<SettingsPage />} />
-                  <Analytics />
                   {profile?.role === 'admin' && (
                     <Route path="/admin" element={<AdminPanel />} />
                   )}
