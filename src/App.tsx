@@ -19,7 +19,7 @@ import { SettingsPage } from './components/Settings/SettingsPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsOfServicePage } from './pages/TermsOfServicePage';
 import { LoadingSpinner } from './components/UI/LoadingSpinner';
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/react";
 
 // Main App Routes Component (needs to be inside AuthProvider)
 function AppRoutes(): JSX.Element {
@@ -28,6 +28,7 @@ function AppRoutes(): JSX.Element {
 
   return (
     <Router>
+      <Analytics />
       <Routes>
         {/* Public routes - accessible without authentication */}
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
@@ -44,7 +45,6 @@ function AppRoutes(): JSX.Element {
           ) : (
             <div className="min-h-screen bg-gray-50">
               <Navbar />
-              <Analytics />
               <main>
                 <Routes>
                   <Route path="/" element={<Navigate to="/dashboard" replace />} />
