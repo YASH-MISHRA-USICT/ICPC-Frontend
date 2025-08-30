@@ -21,6 +21,7 @@ import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsOfServicePage } from './pages/TermsOfServicePage';
 import { LoadingSpinner } from './components/UI/LoadingSpinner';
 import { Analytics } from "@vercel/analytics/react";
+import { Devcamp } from './components/Devcamp/Devcamp';
 
 // Main App Routes Component (needs to be inside AuthProvider)
 function AppRoutes(): JSX.Element {
@@ -48,7 +49,7 @@ function AppRoutes(): JSX.Element {
               <Navbar />
               <main>
                 <Routes>
-                  <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                  <Route path="/" element={<Navigate to="/devcamp" replace />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/teams" element={<TeamsPage />} />
@@ -60,11 +61,12 @@ function AppRoutes(): JSX.Element {
                   <Route path="/showcase" element={<ShowcasePage />} />
                   <Route path="/mentorship" element={<MentorshipPage />} />
                   <Route path="/settings" element={<SettingsPage />} />
+                  <Route path="/devcamp" element={<Devcamp />} />
                   {profile?.role === 'admin' && (
                     <Route path="/admin" element={<AdminPanel />} />
                   )}
                   {/* Default redirect */}
-                  <Route path="*" element={<Navigate to="/dashboard" replace />} />
+                  <Route path="*" element={<Navigate to="/devcamp" replace />} />
                 </Routes>
               </main>
             </div>

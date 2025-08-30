@@ -74,7 +74,7 @@ export function Navbar() {
   };
 
   const navItems = [
-    { name: 'Dashboard', href: '/dashboard', icon: Home },
+    { name: 'Devcamp', href: '/devcamp', icon: Code2 },
     { name: 'Teams', href: '/teams', icon: Users },
     { name: 'Tasks', href: '/tasks', icon: BookOpen },
     { name: 'Leaderboard', href: '/leaderboard', icon: Trophy },
@@ -93,7 +93,7 @@ export function Navbar() {
         <div className="flex justify-between h-16">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
-            <Link to="/dashboard" className="flex items-center space-x-2">
+            <Link to="/devcamp" className="flex items-center space-x-2">
               <img src="/logo.png" alt="Innoverse Logo" className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl" />
               <span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 hidden xs:block">Innoverse</span>
             </Link>

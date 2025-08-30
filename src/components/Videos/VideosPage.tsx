@@ -207,14 +207,51 @@ export function VideosPage(): JSX.Element {
             <div className="lg:col-span-2">
               {selectedVideo ? (
                 <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                  <div className="aspect-video">
+                  <div className="aspect-video relative overflow-hidden">
                     <iframe
-                      src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}`}
+                      src={`https://www.youtube-nocookie.com/embed/${selectedVideo.youtubeId}?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1&controls=1&origin=${window.location.origin}`}
                       title={selectedVideo.title}
                       className="w-full h-full rounded-t-lg"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
+                      referrerPolicy="strict-origin-when-cross-origin"
                     />
+                    
+                    {/* Custom overlay to block specific regions */}
+                    <div className="absolute inset-0 pointer-events-none">
+                      {/* Block top-right corner (YouTube logo area) */}
+                      <div 
+                        className="absolute top-0 right-0 w-16 h-12 pointer-events-auto bg-transparent"
+                        onClick={(e) => e.preventDefault()}
+                        onContextMenu={(e) => e.preventDefault()}
+                      />
+                      
+                      {/* Block top area (title/channel info) */}
+                      <div 
+                        className="absolute top-0 left-0 right-16 h-12 pointer-events-auto bg-transparent"
+                        onClick={(e) => e.preventDefault()}
+                        onContextMenu={(e) => e.preventDefault()}
+                      />
+                      
+                      {/* Block bottom-left "Watch on YouTube" button */}
+                      <div 
+                        className="absolute bottom-2 left-2 w-32 h-8 pointer-events-auto bg-transparent"
+                        onClick={(e) => e.preventDefault()}
+                        onContextMenu={(e) => e.preventDefault()}
+                        title="Blocked"
+                      />
+                      
+                      {/* Block bottom-right YouTube logo (next to fullscreen) */}
+                      <div 
+                        className="absolute bottom-2 right-12 w-8 h-8 pointer-events-auto bg-transparent"
+                        onClick={(e) => e.preventDefault()}
+                        onContextMenu={(e) => e.preventDefault()}
+                        title="Blocked"
+                      />
+                      
+                      {/* Allow bottom area for controls - adjust height as needed */}
+                      <div className="absolute bottom-12 left-0 right-0 top-12 pointer-events-none" />
+                    </div>
                   </div>
                   <div className="p-6">
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
