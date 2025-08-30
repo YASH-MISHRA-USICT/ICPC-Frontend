@@ -23,7 +23,7 @@ import mobileAppDevTrack from "../../data/tracks/mobileAppDevTrack";
 import gameDevTrack from "../../data/tracks/gameDevTrack";
 
 // ---------- Configuration ----------
-const SHOW_TASKS = false; // Change this to true to enable tasks
+const SHOW_TASKS = true; // Change this to true to enable tasks
 
 // ---------- Types ----------
 type ResourceType = "video" | "pdf" | "link";
@@ -233,6 +233,9 @@ export function Devcamp() {
   const [showSuccess, setShowSuccess] = useState(false);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<ActiveTab>("curriculum");
+  const [previewTrack, setPreviewTrack] = useState<TrackMeta["id"] | null>(
+    null
+  ); // For preview mode
 
   useEffect(() => {
     (async () => {
@@ -263,15 +266,22 @@ export function Devcamp() {
     })();
   }, []);
 
+  const hasSelectedTrack = SHOW_TASKS 
+    ? !!selectedTrack && !!userProfile?.profile?.coding_track
+    : !!previewTrack;
+
+  const currentTrackId = SHOW_TASKS ? selectedTrack : previewTrack;
+  
+  // Get track meta for the current track (either selected or preview)
   const trackMeta = useMemo(
-    () => tracks.find((t) => t.id === selectedTrack) ?? null,
-    [selectedTrack]
+    () => tracks.find((t) => t.id === currentTrackId) ?? null,
+    [currentTrackId]
   );
 
   const rawTrackDetails: TrackDetails | null = useMemo(() => {
-    if (!selectedTrack) return null;
-    return trackModules[selectedTrack] ?? null;
-  }, [selectedTrack]);
+    if (!currentTrackId) return null;
+    return trackModules[currentTrackId] ?? null;
+  }, [currentTrackId]);
 
   const trackDetails: TrackDetails | null = useMemo(() => {
     if (!rawTrackDetails && !trackMeta) return null;
@@ -315,9 +325,6 @@ export function Devcamp() {
     };
   }, [rawTrackDetails, trackMeta]);
 
-  const hasSelectedTrack =
-    !!selectedTrack && !!userProfile?.profile?.coding_track;
-
   const toggleLevel = (level?: number) => {
     if (typeof level !== "number") return;
     setExpandedLevels((prev) => {
@@ -328,6 +335,13 @@ export function Devcamp() {
   };
 
   const handleTrackSelection = async (trackId: TrackMeta["id"]) => {
+    // If tasks are disabled, just set preview track without backend call
+    if (!SHOW_TASKS) {
+      setPreviewTrack(trackId);
+      return;
+    }
+
+    // Original track selection logic when tasks are enabled
     setIsSelecting(true);
     try {
       // normalize to profile value
@@ -353,7 +367,6 @@ export function Devcamp() {
         setTimeout(() => setShowSuccess(false), 3000);
       }
     } catch (e) {
-      // eslint-disable-next-line no-console
       console.error("Error saving track selection:", e);
     } finally {
       setIsSelecting(false);
@@ -395,8 +408,8 @@ export function Devcamp() {
 
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        {/* Success Toast */}
-        {showSuccess && (
+        {/* Success Toast - only show when tasks are enabled */}
+        {showSuccess && SHOW_TASKS && (
           <div className="fixed top-4 right-4 z-50 bg-green-100 dark:bg-green-900/20 border border-green-300 dark:border-green-800 text-green-700 dark:text-green-300 px-6 py-4 rounded-xl shadow-lg flex items-center space-x-2">
             <CheckCircleIcon className="w-5 h-5" />
             <span>Track selection updated successfully!</span>
@@ -407,7 +420,7 @@ export function Devcamp() {
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <button
-              onClick={() => setSelectedTrack(null)}
+              onClick={() => SHOW_TASKS ? setSelectedTrack(null) : setPreviewTrack(null)}
               className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors group"
             >
               <ArrowLeftIcon className="h-5 w-5 group-hover:transform group-hover:-translate-x-1 transition-transform" />
@@ -1202,7 +1215,7 @@ export function Devcamp() {
         <div id="tracks">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-              {userProfile?.profile?.coding_track ? "Switch Your Track" : "Select Your Specialty"}
+              {SHOW_TASKS && userProfile?.profile?.coding_track ? "Switch Your Track" : "Select Your Specialty"}
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
               Each track is carefully designed with hands-on projects and industry-relevant skills
@@ -1211,14 +1224,14 @@ export function Devcamp() {
 
           <div className="grid md:grid-cols-2 gap-8">
             {tracks.map((track) => {
-              const userTrack: CodingTrackProfileValue =
-                userProfile?.profile?.coding_track;
-              const isCurrentTrack =
+              const userTrack: CodingTrackProfileValue = userProfile?.profile?.coding_track;
+              const isCurrentTrack = SHOW_TASKS && (
                 (userTrack === "webdev" && track.id === "web-dev") ||
                 (userTrack === "app" && track.id === "app-dev") ||
                 (userTrack === "ai" && track.id === "ai-ml") ||
                 (userTrack === "game" && track.id === "game-dev") ||
-                (userTrack === "dsa" && track.id === "web-dev"); // legacy mapping
+                (userTrack === "dsa" && track.id === "web-dev")
+              );
 
               return (
                 <div
@@ -1229,8 +1242,8 @@ export function Devcamp() {
                       : "border-gray-100 dark:border-gray-700 hover:border-gray-200 dark:hover:border-gray-600 shadow-lg"
                   }`}
                 >
-                  {/* Current Track Badge */}
-                  {isCurrentTrack && (
+                  {/* Current Track Badge - only show when tasks are enabled */}
+                  {isCurrentTrack && SHOW_TASKS && (
                     <div className="absolute -top-2 -right-2 bg-green-500 text-white rounded-full p-3 shadow-lg">
                       <CheckCircleIcon className="h-6 w-6" />
                     </div>
@@ -1282,22 +1295,22 @@ export function Devcamp() {
                   {/* Action */}
                   <button
                     onClick={() => handleTrackSelection(track.id)}
-                    disabled={isSelecting}
+                    disabled={SHOW_TASKS && isSelecting}
                     className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none ${
-                      isCurrentTrack
+                      isCurrentTrack && SHOW_TASKS
                         ? `${getTrackColorClasses(track.color, "bg")} text-white`
                         : "bg-gray-900 dark:bg-gray-700 text-white hover:bg-gray-800 dark:hover:bg-gray-600"
                     }`}
                     type="button"
                   >
-                    {isSelecting ? (
+                    {SHOW_TASKS && isSelecting ? (
                       <span className="inline-flex items-center gap-2">
                         <LoadingSpinner size="small" />
                         Selecting...
                       </span>
-                    ) : isCurrentTrack ? (
+                    ) : isCurrentTrack && SHOW_TASKS ? (
                       "Continue Learning"
-                    ) : userProfile?.profile?.coding_track ? (
+                    ) : SHOW_TASKS && userProfile?.profile?.coding_track ? (
                       "Switch to This Track"
                     ) : (
                       "Start This Track"
@@ -1310,7 +1323,7 @@ export function Devcamp() {
         </div>
 
         {/* CTA */}
-        {!userProfile?.profile?.coding_track && (
+        {!userProfile?.profile?.coding_track && SHOW_TASKS && (
           <div className="text-center mt-16 py-12 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/10 dark:to-purple-900/10 rounded-3xl border border-blue-100 dark:border-blue-800">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
               Ready to Start Your Journey?
@@ -1332,4 +1345,3 @@ export function Devcamp() {
     </div>
   );
 }
-
