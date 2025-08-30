@@ -75,7 +75,7 @@ export function Navbar() {
 
   const navItems = [
     { name: 'Devcamp', href: '/devcamp', icon: Code2 },
-    { name: 'Teams', href: '/teams', icon: Users },
+    // { name: 'Teams', href: '/teams', icon: Users },
     { name: 'Tasks', href: '/tasks', icon: BookOpen },
     { name: 'Leaderboard', href: '/leaderboard', icon: Trophy },
     { name: 'Forum', href: '/forum', icon: MessageSquare },
