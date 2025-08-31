@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const AVAILABLE_TRACKS = [
   { id: 'webdev', name: 'Web Development', disabled: true },
   { id: 'app', name: 'App Development', disabled: true },
+  { id: 'game', name: 'Game Development', disabled: true },
   { id: 'ai', name: 'Data Science & AI', disabled: true },
   { id: 'dsa', name: 'Data Structures & Algorithms', disabled: false }
 ];
