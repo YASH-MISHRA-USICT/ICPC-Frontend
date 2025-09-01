@@ -448,6 +448,24 @@ export function TasksPage() {
                 </div>
               </div>
               
+              {/* Feedback for approved/rejected with feedback */}
+              {submission && 
+                (submission.status === 'approved' || submission.status === 'rejected') &&
+                submission.feedback && (
+                  <div className={`mb-4 p-4 rounded-lg border text-sm ${
+                    submission.status === 'approved'
+                      ? 'bg-green-50 border-green-200 text-green-800 dark:bg-green-900/20 dark:border-green-700 dark:text-green-300'
+                      : 'bg-red-50 border-red-200 text-red-800 dark:bg-red-900/20 dark:border-red-700 dark:text-red-300'
+                  }`}>
+                    <div className="font-semibold mb-1 flex items-center gap-2">
+                      <FileText className="w-4 h-4" />
+                      Feedback from Reviewer:
+                    </div>
+                    <div className="whitespace-pre-wrap break-words">{submission.feedback}</div>
+                  </div>
+              )}
+
+              
               {/* Description - Only show when expanded */}
               {isExpanded && (
                 <div className="mt-6 space-y-6 border-t border-gray-200 dark:border-gray-700 pt-6">
