@@ -451,12 +451,15 @@ export function TasksPage() {
               
               {/* Feedback for approved/rejected with feedback */}
               {submission && 
-                (submission.status === 'approved' || submission.status === 'rejected') &&
                 submission.feedback && (
                   <div className={`mb-4 p-4 rounded-lg border text-sm ${
                     submission.status === 'approved'
                       ? 'bg-green-50 border-green-200 text-green-800 dark:bg-green-900/20 dark:border-green-700 dark:text-green-300'
-                      : 'bg-red-50 border-red-200 text-red-800 dark:bg-red-900/20 dark:border-red-700 dark:text-red-300'
+                      : submission.status === 'rejected'
+                      ? 'bg-red-50 border-red-200 text-red-800 dark:bg-red-900/20 dark:border-red-700 dark:text-red-300'
+                      : submission.status === 'pending'
+                      ? 'bg-orange-50 border-orange-200 text-orange-800 dark:bg-orange-900/20 dark:border-orange-700 dark:text-orange-300'
+                      : 'bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-900/20 dark:border-blue-700 dark:text-blue-300'
                   }`}>
                     <div className="font-semibold mb-1 flex items-center justify-between">
                       <div className="flex items-center gap-2">
