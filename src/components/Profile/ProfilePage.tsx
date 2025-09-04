@@ -5,13 +5,13 @@ import { User, Mail, Award, Users, Edit2, Save, X } from 'lucide-react';
 import { LoadingSpinner } from '../UI/LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
 
-// Available coding tracks/teams (you can move this to a config file)
+// Available coding tracks/teams - remove disabled property and allow all tracks
 const AVAILABLE_TRACKS = [
-  { id: 'webdev', name: 'Web Development', disabled: true },
-  { id: 'app', name: 'App Development', disabled: true },
-  { id: 'game', name: 'Game Development', disabled: true },
-  { id: 'ai', name: 'Data Science & AI', disabled: true },
-  { id: 'dsa', name: 'Data Structures & Algorithms', disabled: false }
+  { id: 'webdev', name: 'Web Development' },
+  { id: 'app', name: 'App Development' },
+  { id: 'game', name: 'Game Development' },
+  { id: 'ai', name: 'Data Science & AI' },
+  { id: 'dsa', name: 'Data Structures & Algorithms' }
 ];
 
 interface ProfileData {
@@ -252,38 +252,54 @@ export function ProfilePage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     <Users className="w-4 h-4 inline mr-2" />
-                    Coding Tracks
+                    Coding Tracks (Max 3)
                   </label>
                   {editing ? (
                     <div className="space-y-2">
                       {AVAILABLE_TRACKS.map((track) => {
-                        const selectedTracks = formData.coding_track ? formData.coding_track.split(',') : ['dsa'];
+                        const selectedTracks = formData.coding_track ? formData.coding_track.split(',').filter(t => t.trim()) : [];
                         const isChecked = selectedTracks.includes(track.id);
+                        const maxReached = selectedTracks.length >= 3 && !isChecked;
+                        
                         return (
-                          <label key={track.id} className={`flex items-center space-x-2 cursor-pointer ${track.disabled ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                          <label key={track.id} className={`flex items-center space-x-2 cursor-pointer ${maxReached ? 'opacity-50 cursor-not-allowed' : ''}`}>
                             <input
                               type="checkbox"
                               checked={isChecked}
-                              disabled={track.disabled}
+                              disabled={maxReached}
                               onChange={(e) => {
-                                if (track.disabled) return;
-                                const currentTracks = formData.coding_track ? formData.coding_track.split(',') : [];
+                                const currentTracks = formData.coding_track ? formData.coding_track.split(',').filter(t => t.trim()) : [];
                                 let updatedTracks;
-                                if (e.target.checked) updatedTracks = [...currentTracks, track.id];
-                                else updatedTracks = currentTracks.filter(id => id !== track.id);
+                                
+                                if (e.target.checked) {
+                                  // Add track if under limit
+                                  if (currentTracks.length < 3) {
+                                    updatedTracks = [...currentTracks, track.id];
+                                  } else {
+                                    return; // Don't add if at max
+                                  }
+                                } else {
+                                  // Remove track
+                                  updatedTracks = currentTracks.filter(id => id !== track.id);
+                                }
+                                
                                 handleInputChange('coding_track', updatedTracks.join(','));
                               }}
-                              className={`w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:bg-gray-700 ${track.disabled ? 'opacity-50' : ''}`}
+                              className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:bg-gray-700"
                             />
-                            <span className={`text-sm ${track.disabled ? 'text-gray-400 dark:text-gray-500' : 'text-gray-700 dark:text-gray-300'}`}>
+                            <span className="text-sm text-gray-700 dark:text-gray-300">
                               {track.name}
-                              {track.disabled && <span className="ml-2 text-xs">(Coming Soon)</span>}
                             </span>
                           </label>
                         );
                       })}
                       <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                        Currently, only Data Structures & Algorithms track is available. Other tracks will be launched soon!
+                        Select up to 3 tracks that interest you. You can change these anytime.
+                        {formData.coding_track && formData.coding_track.split(',').filter(t => t.trim()).length >= 3 && (
+                          <span className="block text-amber-600 dark:text-amber-400 mt-1">
+                            Maximum of 3 tracks reached. Uncheck a track to select a different one.
+                          </span>
+                        )}
                       </p>
                     </div>
                   ) : (
@@ -291,6 +307,7 @@ export function ProfilePage() {
                       {formData.coding_track ? (
                         formData.coding_track
                           .split(',')
+                          .filter(t => t.trim())
                           .map(id => AVAILABLE_TRACKS.find(t => t.id === id)?.name || id)
                           .map((trackName, index) => (
                             <span key={index} className="inline-block bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs px-2 py-1 rounded-full mr-2 mb-1">
@@ -298,9 +315,7 @@ export function ProfilePage() {
                             </span>
                           ))
                       ) : (
-                        <span className="inline-block bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs px-2 py-1 rounded-full mr-2 mb-1">
-                          Data Structures & Algorithms
-                        </span>
+                        <span className="text-gray-500 dark:text-gray-400 text-sm">No tracks selected</span>
                       )}
                     </div>
                   )}

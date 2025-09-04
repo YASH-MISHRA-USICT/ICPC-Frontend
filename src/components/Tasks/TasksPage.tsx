@@ -62,6 +62,7 @@ export function TasksPage() {
   const [showSubmissionModal, setShowSubmissionModal] = useState(false);
   const [editingSubmission, setEditingSubmission] = useState<Submission | null>(null);
   const [expandedTasks, setExpandedTasks] = useState<Set<string>>(new Set());
+  const [expandedFeedback, setExpandedFeedback] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (user) {
@@ -229,6 +230,18 @@ export function TasksPage() {
 
   const toggleTaskExpansion = (taskId: string) => {
     setExpandedTasks(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(taskId)) {
+        newSet.delete(taskId);
+      } else {
+        newSet.add(taskId);
+      }
+      return newSet;
+    });
+  };
+
+  const toggleFeedbackExpansion = (taskId: string) => {
+    setExpandedFeedback(prev => {
       const newSet = new Set(prev);
       if (newSet.has(taskId)) {
         newSet.delete(taskId);
@@ -431,18 +444,6 @@ export function TasksPage() {
                           </p>
                         </div>
                       )}
-                      
-                      {submission.feedback && (
-                        <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-sm border border-blue-200 dark:border-blue-800">
-                          <p className="font-medium text-blue-900 dark:text-blue-300 mb-1 flex items-center">
-                            <FileText className="w-3 h-3 mr-1" />
-                            Feedback:
-                          </p>
-                          <p className="text-blue-800 dark:text-blue-200 whitespace-pre-wrap break-words text-xs leading-relaxed">
-                            {submission.feedback}
-                          </p>
-                        </div>
-                      )}
                     </div>
                   )}
                 </div>
@@ -457,15 +458,32 @@ export function TasksPage() {
                       ? 'bg-green-50 border-green-200 text-green-800 dark:bg-green-900/20 dark:border-green-700 dark:text-green-300'
                       : 'bg-red-50 border-red-200 text-red-800 dark:bg-red-900/20 dark:border-red-700 dark:text-red-300'
                   }`}>
-                    <div className="font-semibold mb-1 flex items-center gap-2">
-                      <FileText className="w-4 h-4" />
-                      Feedback from Reviewer:
+                    <div className="font-semibold mb-1 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <FileText className="w-4 h-4" />
+                        Feedback from Reviewer:
+                      </div>
+                      {submission.feedback.split('\n').length > 3 && (
+                        <button
+                          onClick={() => toggleFeedbackExpansion(task.id)}
+                          className="text-xs opacity-60 hover:opacity-100 transition-opacity flex items-center gap-1"
+                        >
+                          {expandedFeedback.has(task.id) ? 'Show less' : 'Show more'}
+                          <ChevronDown className={`w-3 h-3 transition-transform ${
+                            expandedFeedback.has(task.id) ? 'rotate-180' : ''
+                          }`} />
+                        </button>
+                      )}
                     </div>
-                    <div className="whitespace-pre-wrap break-words">{submission.feedback}</div>
+                    <div className="whitespace-pre-wrap break-words">
+                      {expandedFeedback.has(task.id) || submission.feedback.split('\n').length <= 3
+                        ? submission.feedback
+                        : submission.feedback.split('\n').slice(0, 3).join('\n') + '...'
+                      }
+                    </div>
                   </div>
               )}
 
-              
               {/* Description - Only show when expanded */}
               {isExpanded && (
                 <div className="mt-6 space-y-6 border-t border-gray-200 dark:border-gray-700 pt-6">

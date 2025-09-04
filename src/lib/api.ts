@@ -1,5 +1,5 @@
 // lib/api.ts - API service utility
-const API_BASE_URL = 'https://innoverse-backend.yashmishra.xyz';
+const API_BASE_URL = 'https:innoverse-backend.yashmishra.xyz';
 
 interface ApiResponse<T = any> {
   success: boolean;

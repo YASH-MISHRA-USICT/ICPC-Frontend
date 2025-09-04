@@ -6,7 +6,7 @@ export const aiMlTrack = {
   description: 'Master artificial intelligence and machine learning from absolute beginner to building production AI systems.',
   color: 'purple',
   icon: '🤖',
-  totalWeeks: 8,
+  totalWeeks: 5,
   
   vision: `This roadmap is designed for absolute beginners with zero programming experience. We'll guide you from never having coded before to building amazing AI applications that can recognize images, understand text, and make predictions. Think of it as your personal AI learning journey where every step is explained in simple terms!`,
   
@@ -14,7 +14,7 @@ export const aiMlTrack = {
     'Python programming skills - Start from "What is programming?" to writing your own code',
     'Data science superpowers - Turn messy data into beautiful insights and predictions',
     'AI model building - Create your own image recognition, chatbots, and prediction systems',
-    'Real-world projects - Build 8 impressive projects for your portfolio',
+    'Real-world projects - Build 7 impressive projects for your portfolio',
     'Job-ready skills - Everything employers want in AI/ML professionals',
     'Confidence - Go from "I can\'t code" to "I built an AI system!"',
     'Professional certificate - Showcase your new AI skills to the world'
@@ -146,7 +146,7 @@ export const aiMlTrack = {
           }
         },
         {
-          week: 2,
+          week: 1,
           title: 'Data Handling & Basic Analysis',
           topics: [
             'Working with Excel-like data in Python (using Pandas)',
@@ -242,7 +242,7 @@ export const aiMlTrack = {
       
       weeks: [
         {
-          week: 3,
+          week: 2,
           title: 'Your First AI Models',
           topics: [
             'What is Machine Learning? (Teaching computers to find patterns)',
@@ -292,7 +292,7 @@ export const aiMlTrack = {
           }
         },
         {
-          week: 4,
+          week: 2,
           title: 'Advanced ML & Clustering',
           topics: [
             'Unsupervised Learning: Finding hidden patterns without examples',
@@ -359,7 +359,7 @@ export const aiMlTrack = {
       level: 3,
       title: 'Advanced - "Deep Learning & AI Specializations"',
       goal: 'Master computer vision (image AI) and natural language processing (text AI)!',
-      weeks: [5, 6],
+      weeks: [3, 4],
       
       setupGuide: [
         {
@@ -384,7 +384,7 @@ export const aiMlTrack = {
       
       weeks: [
         {
-          week: 5,
+          week: 3,
           title: 'Computer Vision (Teaching Computers to "See")',
           topics: [
             'Neural Networks (Copying how human brain works)',
@@ -435,7 +435,7 @@ export const aiMlTrack = {
           }
         },
         {
-          week: 6,
+          week: 4,
           title: 'Natural Language Processing - Teaching Computers to Understand Text',
           topics: [
             'Text Processing: Cleaning and preparing text data',
@@ -503,7 +503,7 @@ export const aiMlTrack = {
       level: 4,
       title: 'Advanced - "Production AI & Career Ready"',
       goal: 'Deploy professional AI systems and build your dream capstone project!',
-      weeks: [7, 8],
+      weeks: [5],
       
       setupGuide: [
         {
@@ -527,66 +527,8 @@ export const aiMlTrack = {
       ],
       
       weeks: [
-        {
-          week: 7,
-          title: 'MLOps & Professional Deployment',
-          topics: [
-            'MLOps: How to manage AI systems in real companies',
-            'Model Versioning: Keeping track of different AI model versions',
-            'Automated Testing: Making sure your AI doesn\'t break',
-            'Monitoring: Watching your AI in production',
-            'Containerization: Packaging AI apps to run anywhere',
-            'CI/CD for AI: Automatically deploying model updates'
-          ],
-          resources: [
-            {
-              type: 'link',
-              title: 'MLOps Course',
-              url: 'https://www.coursera.org/learn/machine-learning-engineering-for-production-mlops',
-              description: 'Stanford\'s MLOps specialization'
-            },
-            {
-              type: 'link',
-              title: 'Weights & Biases Course',
-              url: 'https://wandb.ai/site/courses',
-              description: 'Free MLOps training'
-            },
-            {
-              type: 'pdf',
-              title: 'MLflow Documentation',
-              url: 'https://mlflow.org/docs/latest/tutorials-and-examples/index.html',
-              description: 'Model management'
-            }
-          ],
-          project: {
-            title: 'Production ML Pipeline - Forensics Platform',
-            description: 'Build a complete forensics platform that can call different APIs for text analysis (like Gemini or Grok) and also run local models like ResNet50 for image classification.',
-            coreFeatures: [
-              'Real-time Serving: Handle multiple predictions per second',
-              'Monitoring Dashboard: Track performance, errors, user behavior',
-              'Automated Alerts: Email/Slack notifications for problems',
-              'Version Control: Roll back to previous models if needed',
-              'Multi-modal Analysis: Both text and image processing',
-              'API Integration: Connect to external AI services'
-            ],
-            resources: [
-              {
-                type: 'video',
-                title: 'FastAPI Tutorial',
-                url: 'https://youtu.be/rvFsGRvj9jo?si=7rSjUZ9YApVA2hqj',
-                description: 'Building APIs for ML'
-              },
-              {
-                type: 'video',
-                title: 'Docker Tutorial',
-                url: 'https://youtu.be/pg19Z8LL06w?si=H5zv5fwo-eY6zGnj',
-                description: 'Containerization basics'
-              }
-            ]
-          }
-        },
-        {
-          week: 8,
+          {
+          week: 5,
           title: 'Capstone Project - Your AI Portfolio Showcase',
           topics: [
             'Project Planning: Scoping and requirements gathering',
@@ -665,7 +607,6 @@ export const aiMlTrack = {
       'Customer Personality Analyzer - Advanced ML & clustering',
       'AI Vision System - Computer vision expertise',
       'Text Analytics Platform - NLP mastery',
-      'Production ML Pipeline - MLOps and deployment',
       'Custom AI Application - Full-stack AI application'
     ],
     
@@ -698,7 +639,7 @@ export const aiMlTrack = {
     certification: {
       title: 'DevCamp AI/ML Expert Certificate',
       requirements: [
-        'Submit all 8 projects on time with working demos',
+        'Submit all 7 projects on time with working demos',
         'Code quality score of 8/10 or higher (automated review)',
         'Pass final technical assessment (multiple choice + coding)',
         'Complete peer review of 2 other students\' capstone projects',

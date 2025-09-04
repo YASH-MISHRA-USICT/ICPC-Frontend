@@ -191,7 +191,7 @@ const tracks: TrackMeta[] = [
       "Dive into artificial intelligence and machine learning with Python, TensorFlow, and more.",
     color: "green",
     icon: "🤖",
-    totalWeeks: 8,
+    totalWeeks: 5,
   },
   {
     id: "game-dev",
@@ -364,13 +364,17 @@ export function Devcamp() {
         setUserProfile(resp.data);
         setSelectedTrack(trackId);
         setShowSuccess(true);
-        setTimeout(() => setShowSuccess(false), 3000);
+        
+        // Refresh the entire site after successful track change
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500); // Give time to show success message
       }
     } catch (e) {
       console.error("Error saving track selection:", e);
-    } finally {
-      setIsSelecting(false);
+      setIsSelecting(false); // Only reset if there's an error
     }
+    // Don't reset isSelecting on success since we're refreshing
   };
 
   if (isLoading) {
