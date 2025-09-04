@@ -1182,12 +1182,21 @@ export function Devcamp() {
         {/* Hero */}
         <div className="text-center mb-16">
           <div className="mb-8 relative">
+            {/* ACM Logo - Top Left */}
+            <div className="absolute top-0 left-12 flex items-center space-x-2">
+              <img
+                src="/acm.png"
+                alt="ACM"
+                className="h-20 w-auto opacity-100 hover:opacity-100 transition-opacity dark:filter dark:invert dark:brightness-0 dark:contrast-100"
+              />
+            </div>
+
             {/* DevSource Logo - Top Right */}
             <div className="absolute top-0 right-12 flex items-center space-x-2">
               <img
                 src="/devsource.png"
                 alt="DevSource"
-                className="h-20 w-auto opacity-100 hover:opacity-100 transition-opacity"
+                className="h-20 w-auto opacity-100 hover:opacity-100 transition-opacity dark:filter dark:invert dark:brightness-0 dark:contrast-100"
               />
             </div>
 
