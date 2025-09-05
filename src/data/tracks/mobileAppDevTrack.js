@@ -6,7 +6,7 @@ export const mobileAppDevTrack = {
   description: 'Master modern mobile technologies including Flutter, React Native, and Kotlin for building cross-platform and native applications.',
   color: 'green',
   icon: '📱',
-  totalWeeks: 5,
+  totalWeeks: 4,
   
   vision: `The vision of this roadmap is to provide a clear, beginner-friendly, and self-contained learning path for students who want to start their journey in Mobile App Development. This roadmap is designed in levels so that students can progress at their own pace from absolute beginner to Flutter, Kotlin (Android SDK), React Native stack developer. The ultimate goal is to make students confident enough to build and deploy their own projects without relying on constant external help.`,
   
@@ -385,7 +385,7 @@ export const mobileAppDevTrack = {
         {
           week: 4,
           project: {
-            title: 'Real-Time Chat Application',
+            title: 'Final Major Project - Real-Time Chat Application',
             subtitle: 'Advanced Communication Features',
             description: 'Build a production-ready real-time chat application with comprehensive features including media sharing, push notifications, user presence indicators, and end-to-end encryption. This project demonstrates mastery of real-time communication and advanced mobile development concepts.',
             complexity: 'Advanced',
@@ -430,37 +430,6 @@ export const mobileAppDevTrack = {
               }
             ]
           }
-        },
-        {
-          week: 5,
-          project: {
-            title: 'Final Major Project - Social Media App',
-            subtitle: 'Production-Ready Mobile Application',
-            description: 'Create a comprehensive social media mobile application that combines all learned concepts. This capstone project should demonstrate your ability to build scalable, secure, and feature-rich mobile applications with real-time capabilities.',
-            complexity: 'Expert',
-            skillsLearned: ['Full-Stack Mobile Architecture', 'Social Features', 'Content Management', 'Advanced Security', 'App Store Deployment'],
-            keyFeatures: [
-              'User authentication with social login options',
-              'Profile management with photo uploads',
-              'Post creation with text, images, and videos',
-              'Real-time feed with infinite scrolling',
-              'Like, comment, and share functionality',
-              'Direct messaging system',
-              'Push notifications for interactions',
-              'Story feature with 24-hour expiry',
-              'Advanced privacy settings',
-              'Content moderation and reporting',
-              'Offline capability with data sync',
-              'App store ready with proper testing'
-            ],
-            deliverables: [
-              'Fully functional mobile application',
-              'Clean, documented codebase',
-              'App store listing preparation',
-              'User manual and technical documentation',
-              'Demo video showcasing all features'
-            ]
-          }
         }
       ],
       
@@ -484,8 +453,7 @@ export const mobileAppDevTrack = {
       'To-Do List App (Week 1)',
       'Movie Discovery App (Week 2)',
       'E-Commerce Mobile App (Week 3)',
-      'Real-Time Chat Application (Week 4)',
-      'Final Major Project - Social Media App (Week 5)'
+      'Final Major Project - Real-Time Chat Application (Week 4)',
     ],
     submissionRequirements: {
       mandatory: ['GitHub Repository link', 'Demonstration video'],

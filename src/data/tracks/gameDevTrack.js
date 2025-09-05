@@ -233,7 +233,7 @@ export const gameDevTrack = {
             }
           ],
           project: {
-            title: 'Advanced 2D Game Prototype',
+            title: 'Pokémon Clone',
             description: 'Create a comprehensive 2D game (side-scroller or top-down shooter) using Unity. Implement player movement with Rigidbody2D, create animated sprites, and add interactive enemies or obstacles with basic AI patterns.',
             complexity: 'Intermediate',
             skillsLearned: ['Unity Editor proficiency', 'C# scripting', '2D physics', 'Animation systems'],
@@ -402,7 +402,7 @@ export const gameDevTrack = {
         {
           week: 5,
           project: {
-            title: 'Final Major Project - Multiplayer 2D Game',
+            title: 'Multiplayer 2D Game (Optional)',
             subtitle: 'Complete Networked Game Experience',
             description: 'Design and implement a fully functional 2D multiplayer game using Unity\'s networking capabilities. This capstone project demonstrates mastery of game development, networking, and deployment skills through a complete multiplayer experience.',
             complexity: 'Advanced',
@@ -494,8 +494,7 @@ export const gameDevTrack = {
       '2D Platformer Game (Week 1)',
       '3D Shooter Game (Week 2)',
       'Advanced 2D Game Prototype (Week 3)',
-      'Polished 2D Game with UI and Effects (Week 4)',
-      'Final Major Project - Multiplayer 2D Game (Week 5)'
+      'Final Major Project - Polished 2D Game with UI and Effects (Week 4)',
     ],
     submissionRequirements: {
       mandatory: ['GitHub Repository link', 'Demonstration video'],

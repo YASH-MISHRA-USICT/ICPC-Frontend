@@ -23,7 +23,7 @@ import mobileAppDevTrack from "../../data/tracks/mobileAppDevTrack";
 import gameDevTrack from "../../data/tracks/gameDevTrack";
 
 // ---------- Configuration ----------
-const SHOW_TASKS = false; // Change this to true to enable tasks
+const SHOW_TASKS = true; // Change this to true to enable tasks
 
 // ---------- Tykl;pes ----------
 type ResourceType = "video" | "pdf" | "link";
