@@ -41,7 +41,7 @@ interface Submission {
   status: 'pending' | 'approved' | 'rejected' | 'needs_revision';
   submitted_at: string;
   feedback?: string;
-  points_awarded?: number;
+  points?: number; // Backend uses 'points' not 'points_awarded'
 }
 
 export function TasksPage() {
@@ -311,6 +311,12 @@ export function TasksPage() {
                       'bg-gray-50 text-gray-700 border-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600'
                     }`}>
                       {taskStatus.text}
+                      {/* Add points indicator for approved tasks */}
+                      {submission?.status === 'approved' && submission.points !== undefined && submission.points !== null && (
+                        <span className="ml-2 text-xs font-bold">
+                          (+{submission.points} pts)
+                        </span>
+                      )}
                     </span>
                     
                     {/* Difficulty Badge */}
@@ -412,6 +418,19 @@ export function TasksPage() {
                         {new Date(submission.submitted_at).toLocaleDateString()}
                       </p>
                       
+                      {/* Points Awarded - Show for approved submissions */}
+                      {submission.status === 'approved' && submission.points !== undefined && submission.points !== null && (
+                        <div className="flex items-center justify-between p-3 mb-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-700">
+                          <div className="flex items-center space-x-2">
+                            <Trophy className="w-4 h-4 text-yellow-500" />
+                            <span className="text-sm font-medium text-green-700 dark:text-green-300">Points Earned - </span>
+                          </div>
+                          <span className="text-base font-bold text-green-600 dark:text-green-400">
+                            {submission.points}
+                          </span>
+                        </div>
+                      )}
+                      
                       {/* Edit Button - Only for pending submissions */}
                       {submission.status === 'pending' && task.is_active && !isOverdue && (
                         <button
@@ -434,15 +453,6 @@ export function TasksPage() {
                           <ExternalLink className="w-3 h-3" />
                           <span>View</span>
                         </a>
-                      )}
-                      
-                      {submission.points_awarded !== undefined && submission.points_awarded !== null && (
-                        <div className="flex items-center justify-end space-x-1 mb-2">
-                          <Trophy className="w-4 h-4 text-yellow-500" />
-                          <p className="text-sm font-bold text-green-600 dark:text-green-400">
-                            {submission.points_awarded} pts
-                          </p>
-                        </div>
                       )}
                     </div>
                   )}
