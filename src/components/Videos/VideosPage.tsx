@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Play, Clock, Eye, BookOpen } from 'lucide-react';
 import { apiService, Video } from '../../lib/api';
 import { LoadingSpinner } from '../UI/LoadingSpinner';
+import { useAuth } from '../../hooks/useAuth';
 
 export function VideosPage(): JSX.Element {
+  const { user } = useAuth();
   const [videos, setVideos] = useState<Video[]>([]);
   const [filteredVideos, setFilteredVideos] = useState<Video[]>([]);
   const [categories, setCategories] = useState<string[]>(['All']);
@@ -16,14 +18,26 @@ export function VideosPage(): JSX.Element {
     loadVideos();
   }, []);
 
-  useEffect(() => {
-    // Filter videos when category changes
-    if (selectedCategory === 'All') {
-      setFilteredVideos(videos);
-    } else {
-      setFilteredVideos(videos.filter(video => video.category === selectedCategory));
-    }
-  }, [videos, selectedCategory]);
+  // Map user coding tracks to video categories - handle multiple tracks
+  const getVideoCategories = (userTracks: string | string[] | undefined): string[] => {
+    const trackMap: Record<string, string> = {
+      'webdev': 'Web Development',
+      'app': 'App Development', 
+      'ai': 'AI/ML',
+      'game': 'Game Development',
+      'dsa': 'Programming'
+    };
+    
+    if (!userTracks) return ['Programming'];
+    
+    // Handle both string and array formats
+    const tracksArray = Array.isArray(userTracks) ? userTracks : [userTracks];
+    
+    const categories = tracksArray.map(track => trackMap[track] || 'Programming');
+    
+    // Remove duplicates and ensure we always have at least Programming
+    return [...new Set(categories)];
+  };
 
   const loadVideos = async () => {
     try {
@@ -35,14 +49,21 @@ export function VideosPage(): JSX.Element {
       if (response.success && response.data) {
         setVideos(response.data);
         
-        // Extract unique categories
-        const uniqueCategories = ['All', ...new Set(response.data.map(video => video.category))];
+        // Filter categories based on user's tracks
+        let uniqueCategories = ['All', ...new Set(response.data.map(video => video.category))];
+        
+        // If user has tracks, only show their track categories
+        if (user?.profile?.coding_track) {
+          const userCategories = getVideoCategories(user.profile.coding_track);
+          uniqueCategories = uniqueCategories.filter(category => 
+            category === 'All' || 
+            userCategories.includes(category)
+          );
+        }
+        
         setCategories(uniqueCategories);
         
-        // Set first video as selected
-        if (response.data.length > 0) {
-          setSelectedVideo(response.data[0]);
-        }
+        // Don't set selected video here - let the useEffect handle it after filtering
       } else {
         setError(response.error || 'Failed to load videos');
       }
@@ -53,19 +74,117 @@ export function VideosPage(): JSX.Element {
     }
   };
 
+  // Initialize selected category based on user's tracks
+  useEffect(() => {
+    if (user?.profile?.coding_track && selectedCategory === 'All') {
+      const userCategories = getVideoCategories(user.profile.coding_track);
+      // Set the first track category as default
+      if (userCategories.length > 0) {
+        setSelectedCategory(userCategories[0]);
+      }
+    }
+  }, [user?.profile?.coding_track]);
+
+  // Remove the duplicate useEffect and combine the filtering logic
+  useEffect(() => {
+    console.log('Filtering effect triggered:', { 
+      selectedCategory, 
+      userTrack: user?.profile?.coding_track,
+      videosLength: videos.length 
+    });
+
+    // Filter videos when category changes or when videos load
+    if (selectedCategory === 'All') {
+      // If user has tracks, show only their track videos
+      if (user?.profile?.coding_track) {
+        const userCategories = getVideoCategories(user.profile.coding_track);
+        const trackVideos = videos.filter(video => 
+          userCategories.includes(video.category)
+        );
+        console.log('Filtered track videos for All:', trackVideos.length, trackVideos.map(v => v.category));
+        setFilteredVideos(trackVideos);
+        
+        // Set first filtered video as selected only if no video is currently selected
+        if (trackVideos.length > 0 && !selectedVideo) {
+          setSelectedVideo(trackVideos[0]);
+        }
+      } else {
+        // No user track, show all videos
+        console.log('No user track, showing all videos');
+        setFilteredVideos(videos);
+        
+        // Set first video as selected only if no video is currently selected
+        if (videos.length > 0 && !selectedVideo) {
+          setSelectedVideo(videos[0]);
+        }
+      }
+    } else {
+      // Filter by selected category (including user's tracks)
+      const categoryVideos = videos.filter(video => video.category === selectedCategory);
+      console.log('Category filter:', selectedCategory, categoryVideos.length);
+      setFilteredVideos(categoryVideos);
+      
+      // Always update selected video when changing categories
+      if (categoryVideos.length > 0) {
+        setSelectedVideo(categoryVideos[0]);
+      }
+    }
+  }, [videos, selectedCategory, user?.profile?.coding_track]);
+
+  // Optionally increment view count by calling the single video API
   const handleVideoSelect = async (video: Video) => {
     setSelectedVideo(video);
     
-    // Optionally increment view count by calling the single video API
     try {
       await apiService.getVideo(video._id);
-      // Update local state to reflect view increment if your API does that
       setVideos(prev => prev.map(v => 
         v._id === video._id ? { ...v, views: v.views + 1 } : v
       ));
     } catch (error) {
       console.error('Error updating view count:', error);
     }
+  };
+
+  // Add helper functions to detect video type and extract IDs
+  const getVideoType = (video: Video): 'youtube' | 'drive' | 'unknown' => {
+    // Check if video has videoType field first
+    if (video.videoType === 'drive' || video.driveId) {
+      return 'drive';
+    }
+    // If it has youtubeId, it's YouTube
+    if (video.youtubeId) {
+      return 'youtube';
+    }
+    return 'unknown';
+  };
+
+  const getVideoThumbnail = (video: Video): string => {
+    const videoType = getVideoType(video);
+    
+    if (videoType === 'youtube' && video.youtubeId) {
+      return `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`;
+    }
+    
+    if (videoType === 'drive' && video.driveId) {
+      // Use Google Drive's thumbnail API with better size parameter
+      return `https://lh3.googleusercontent.com/d/${video.driveId}=w320-h240-c`;
+    }
+    
+    return '';
+  };
+
+  const getEmbedUrl = (video: Video): string => {
+    const videoType = getVideoType(video);
+    
+    if (videoType === 'youtube' && video.youtubeId) {
+      return `https://www.youtube-nocookie.com/embed/${video.youtubeId}?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1&controls=1&origin=${window.location.origin}`;
+    }
+    
+    if (videoType === 'drive' && video.driveId) {
+      return `https://drive.google.com/file/d/${video.driveId}/preview`;
+    }
+    
+    return '';
   };
 
   if (loading) {
@@ -166,13 +285,14 @@ export function VideosPage(): JSX.Element {
                     <div className="flex items-start space-x-3">
                       <div className="flex-shrink-0">
                         <img
-                          src={`https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`}
-                          alt={video.title}
+                          src={getVideoThumbnail(video)}
+                          alt={video.title || 'Video thumbnail'}
                           className="w-16 h-12 object-cover rounded"
                           onError={(e) => {
                             // Fallback to play icon if thumbnail fails
                             e.currentTarget.style.display = 'none';
-                            e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                            const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                            if (fallback) fallback.classList.remove('hidden');
                           }}
                         />
                         <div className="w-16 h-12 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center hidden">
@@ -208,50 +328,63 @@ export function VideosPage(): JSX.Element {
               {selectedVideo ? (
                 <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
                   <div className="aspect-video relative overflow-hidden">
-                    <iframe
-                      src={`https://www.youtube-nocookie.com/embed/${selectedVideo.youtubeId}?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1&controls=1&origin=${window.location.origin}`}
-                      title={selectedVideo.title}
-                      className="w-full h-full rounded-t-lg"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      referrerPolicy="strict-origin-when-cross-origin"
-                    />
-                    
-                    {/* Custom overlay to block specific regions */}
-                    <div className="absolute inset-0 pointer-events-none">
-                      {/* Block top-right corner (YouTube logo area) */}
-                      <div 
-                        className="absolute top-0 right-0 w-16 h-12 pointer-events-auto bg-transparent"
-                        onClick={(e) => e.preventDefault()}
-                        onContextMenu={(e) => e.preventDefault()}
-                      />
-                      
-                      {/* Block top area (title/channel info) */}
-                      <div 
-                        className="absolute top-0 left-0 right-16 h-12 pointer-events-auto bg-transparent"
-                        onClick={(e) => e.preventDefault()}
-                        onContextMenu={(e) => e.preventDefault()}
-                      />
-                      
-                      {/* Block bottom-left "Watch on YouTube" button */}
-                      <div 
-                        className="absolute bottom-2 left-2 w-32 h-8 pointer-events-auto bg-transparent"
-                        onClick={(e) => e.preventDefault()}
-                        onContextMenu={(e) => e.preventDefault()}
-                        title="Blocked"
-                      />
-                      
-                      {/* Block bottom-right YouTube logo (next to fullscreen) */}
-                      <div 
-                        className="absolute bottom-2 right-12 w-8 h-8 pointer-events-auto bg-transparent"
-                        onClick={(e) => e.preventDefault()}
-                        onContextMenu={(e) => e.preventDefault()}
-                        title="Blocked"
-                      />
-                      
-                      {/* Allow bottom area for controls - adjust height as needed */}
-                      <div className="absolute bottom-12 left-0 right-0 top-12 pointer-events-none" />
-                    </div>
+                    {getEmbedUrl(selectedVideo) ? (
+                      <>
+                        <iframe
+                          src={getEmbedUrl(selectedVideo)}
+                          title={selectedVideo.title || 'Video Player'}
+                          className="w-full h-full rounded-t-lg"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          referrerPolicy="strict-origin-when-cross-origin"
+                        />
+                        
+                        {/* Custom overlay - only for YouTube videos */}
+                        {getVideoType(selectedVideo) === 'youtube' && (
+                          <div className="absolute inset-0 pointer-events-none">
+                            {/* Block top-right corner (YouTube logo area) */}
+                            <div 
+                              className="absolute top-0 right-0 w-16 h-12 pointer-events-auto bg-transparent"
+                              onClick={(e) => e.preventDefault()}
+                              onContextMenu={(e) => e.preventDefault()}
+                            />
+                            
+                            {/* Block top area (title/channel info) */}
+                            <div 
+                              className="absolute top-0 left-0 right-16 h-12 pointer-events-auto bg-transparent"
+                              onClick={(e) => e.preventDefault()}
+                              onContextMenu={(e) => e.preventDefault()}
+                            />
+                            
+                            {/* Block bottom-left "Watch on YouTube" button */}
+                            <div 
+                              className="absolute bottom-2 left-2 w-32 h-8 pointer-events-auto bg-transparent"
+                              onClick={(e) => e.preventDefault()}
+                              onContextMenu={(e) => e.preventDefault()}
+                              title="Blocked"
+                            />
+                            
+                            {/* Block bottom-right YouTube logo (next to fullscreen) */}
+                            <div 
+                              className="absolute bottom-2 right-12 w-8 h-8 pointer-events-auto bg-transparent"
+                              onClick={(e) => e.preventDefault()}
+                              onContextMenu={(e) => e.preventDefault()}
+                              title="Blocked"
+                            />
+                            
+                            {/* Allow bottom area for controls - adjust height as needed */}
+                            <div className="absolute bottom-12 left-0 right-0 top-12 pointer-events-none" />
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className="w-full h-full bg-gray-200 dark:bg-gray-700 rounded-t-lg flex items-center justify-center">
+                        <div className="text-center">
+                          <Play className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                          <p className="text-gray-500 dark:text-gray-400">Video unavailable</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="p-6">
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
