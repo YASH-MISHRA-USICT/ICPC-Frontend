@@ -63,16 +63,9 @@ export function ResourcesPage() {
     return matchesSearch && matchesTeam && matchesDifficulty;
   });
 
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'beginner': return 'bg-green-100 text-green-700';
-      case 'intermediate': return 'bg-yellow-100 text-yellow-700';
-      case 'advanced': return 'bg-red-100 text-red-700';
-      default: return 'bg-gray-100 text-gray-700';
-    }
-  };
-
-  const getResourceTypeIcon = (type: string) => {
+  const getResourceTypeIcon = (type: string | undefined) => {
+    if (!type) return '📄';
+    
     switch (type.toLowerCase()) {
       case 'video': return '🎥';
       case 'article': return '📖';
