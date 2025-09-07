@@ -18,27 +18,6 @@ export function VideosPage(): JSX.Element {
     loadVideos();
   }, []);
 
-  // Map user coding tracks to video categories - handle multiple tracks
-  const getVideoCategories = (userTracks: string | string[] | undefined): string[] => {
-    const trackMap: Record<string, string> = {
-      'webdev': 'Web Development',
-      'app': 'App Development', 
-      'ai': 'AI/ML',
-      'game': 'Game Development',
-      'dsa': 'Programming'
-    };
-    
-    if (!userTracks) return ['Programming'];
-    
-    // Handle both string and array formats
-    const tracksArray = Array.isArray(userTracks) ? userTracks : [userTracks];
-    
-    const categories = tracksArray.map(track => trackMap[track] || 'Programming');
-    
-    // Remove duplicates and ensure we always have at least Programming
-    return [...new Set(categories)];
-  };
-
   const loadVideos = async () => {
     try {
       setLoading(true);
@@ -47,23 +26,41 @@ export function VideosPage(): JSX.Element {
       const response = await apiService.getVideos();
       
       if (response.success && response.data) {
-        setVideos(response.data);
+        let allVideos = response.data;
         
-        // Filter categories based on user's tracks
-        let uniqueCategories = ['All', ...new Set(response.data.map(video => video.category))];
-        
-        // If user has tracks, only show their track categories
+        // Filter videos based on user's tracks if they have any
         if (user?.profile?.coding_track) {
-          const userCategories = getVideoCategories(user.profile.coding_track);
-          uniqueCategories = uniqueCategories.filter(category => 
-            category === 'All' || 
-            userCategories.includes(category)
-          );
+          // Handle comma-separated tracks
+          const userTracks = user.profile.coding_track.split(',').map(track => track.trim());
+          
+          // Map track codes to category names
+          const trackToCategory = {
+            'webdev': 'Web Development',
+            'app': 'App Development',
+            'ai': 'AI/ML', 
+            'game': 'Game Development',
+            'dsa': 'Programming'
+          };
+          
+          // Get user's category names
+          const userCategories = userTracks.map(track => trackToCategory[track]).filter(Boolean);
+          
+          // Filter videos to only show user's categories
+          if (userCategories.length > 0) {
+            allVideos = response.data.filter(video => userCategories.includes(video.category));
+          }
         }
         
+        setVideos(allVideos);
+        
+        // Extract unique categories from filtered videos
+        const uniqueCategories = ['All', ...new Set(allVideos.map(video => video.category))];
         setCategories(uniqueCategories);
         
-        // Don't set selected video here - let the useEffect handle it after filtering
+        // Set first video as selected
+        if (allVideos.length > 0) {
+          setSelectedVideo(allVideos[0]);
+        }
       } else {
         setError(response.error || 'Failed to load videos');
       }
@@ -74,62 +71,14 @@ export function VideosPage(): JSX.Element {
     }
   };
 
-  // Initialize selected category based on user's tracks
+  // Simple filtering logic
   useEffect(() => {
-    if (user?.profile?.coding_track && selectedCategory === 'All') {
-      const userCategories = getVideoCategories(user.profile.coding_track);
-      // Set the first track category as default
-      if (userCategories.length > 0) {
-        setSelectedCategory(userCategories[0]);
-      }
-    }
-  }, [user?.profile?.coding_track]);
-
-  // Remove the duplicate useEffect and combine the filtering logic
-  useEffect(() => {
-    console.log('Filtering effect triggered:', { 
-      selectedCategory, 
-      userTrack: user?.profile?.coding_track,
-      videosLength: videos.length 
-    });
-
-    // Filter videos when category changes or when videos load
     if (selectedCategory === 'All') {
-      // If user has tracks, show only their track videos
-      if (user?.profile?.coding_track) {
-        const userCategories = getVideoCategories(user.profile.coding_track);
-        const trackVideos = videos.filter(video => 
-          userCategories.includes(video.category)
-        );
-        console.log('Filtered track videos for All:', trackVideos.length, trackVideos.map(v => v.category));
-        setFilteredVideos(trackVideos);
-        
-        // Set first filtered video as selected only if no video is currently selected
-        if (trackVideos.length > 0 && !selectedVideo) {
-          setSelectedVideo(trackVideos[0]);
-        }
-      } else {
-        // No user track, show all videos
-        console.log('No user track, showing all videos');
-        setFilteredVideos(videos);
-        
-        // Set first video as selected only if no video is currently selected
-        if (videos.length > 0 && !selectedVideo) {
-          setSelectedVideo(videos[0]);
-        }
-      }
+      setFilteredVideos(videos);
     } else {
-      // Filter by selected category (including user's tracks)
-      const categoryVideos = videos.filter(video => video.category === selectedCategory);
-      console.log('Category filter:', selectedCategory, categoryVideos.length);
-      setFilteredVideos(categoryVideos);
-      
-      // Always update selected video when changing categories
-      if (categoryVideos.length > 0) {
-        setSelectedVideo(categoryVideos[0]);
-      }
+      setFilteredVideos(videos.filter(video => video.category === selectedCategory));
     }
-  }, [videos, selectedCategory, user?.profile?.coding_track]);
+  }, [videos, selectedCategory]);
 
   // Optionally increment view count by calling the single video API
   const handleVideoSelect = async (video: Video) => {
