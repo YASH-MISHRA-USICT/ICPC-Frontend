@@ -225,32 +225,7 @@ export function ResourcesPage() {
             </p>
           </div>
         )}
-
-        {/* Featured Resources Section */}
-        <div className="mt-16">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Recommended for Beginners</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[
-              { title: 'HTML & CSS Basics', type: 'Course', track: 'Web Dev', difficulty: 'Beginner' },
-              { title: 'Python Fundamentals', type: 'Tutorial', track: 'AI/ML', difficulty: 'Beginner' },
-              { title: 'Game Dev with Unity', type: 'Video', track: 'Game Dev', difficulty: 'Beginner' },
-              { title: 'React Native Intro', type: 'Article', track: 'Mobile', difficulty: 'Beginner' },
-            ].map((item, index) => (
-              <div key={index} className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg p-4 border border-blue-100 dark:border-blue-800">
-                <div className="flex items-center space-x-2 mb-2">
-                  <Star className="w-4 h-4 text-yellow-500" />
-                  <span className="text-xs text-blue-600 dark:text-blue-400 font-medium">{item.type}</span>
-                </div>
-                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">{item.title}</h3>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600 dark:text-gray-400">{item.track}</span>
-                  <span className="text-green-600 dark:text-green-400">{item.difficulty}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+            </div>
     </div>
   );
 }
