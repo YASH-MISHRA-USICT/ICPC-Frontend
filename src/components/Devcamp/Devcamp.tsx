@@ -422,28 +422,28 @@ export function Devcamp() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 space-y-4 md:space-y-0">
             <button
               onClick={() => SHOW_TASKS ? setSelectedTrack(null) : setPreviewTrack(null)}
-              className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors group"
+              className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors group self-start"
             >
               <ArrowLeftIcon className="h-5 w-5 group-hover:transform group-hover:-translate-x-1 transition-transform" />
               <span>Change Track</span>
             </button>
 
-            <div className="flex items-center space-x-8 mr-8">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
               {/* Track Info */}
               <div
-                className={`flex items-center space-x-3 px-4 py-2 rounded-xl border ${getTrackColorClasses(trackMeta.color, "border")} bg-white dark:bg-gray-800 shadow-sm`}
+                className={`flex items-center space-x-3 px-3 py-2 rounded-xl border ${getTrackColorClasses(trackMeta.color, "border")} bg-white dark:bg-gray-800 shadow-sm w-full sm:w-auto`}
               >
-                <span className="text-2xl" aria-hidden>
+                <span className="text-xl md:text-2xl" aria-hidden>
                   {trackMeta.icon}
                 </span>
-                <div>
+                <div className="min-w-0">
                   <div className="flex items-center space-x-2">
-                    <CheckCircleIcon className="h-4 w-4 text-green-500" />
+                    <CheckCircleIcon className="h-3 w-3 md:h-4 md:w-4 text-green-500 flex-shrink-0" />
                     <span
-                      className={`font-semibold ${getTrackColorClasses(trackMeta.color, "text")}`}
+                      className={`font-semibold text-sm md:text-base ${getTrackColorClasses(trackMeta.color, "text")} truncate`}
                     >
                       {trackMeta.title} Track
                     </span>
@@ -454,12 +454,12 @@ export function Devcamp() {
                 </div>
               </div>
 
-              {/* Brand */}
-              <div className="flex items-center space-x-2">
+              {/* Brand - Hidden on mobile, smaller on tablet */}
+              <div className="hidden sm:flex items-center space-x-2">
                 <img
                   src="/devsource.png"
                   alt="DevSource"
-                  className="h-20 w-auto opacity-100 transition-opacity"
+                  className="h-12 md:h-16 lg:h-20 w-auto opacity-100 transition-opacity"
                 />
               </div>
             </div>
@@ -518,22 +518,22 @@ export function Devcamp() {
             <>
               {/* Hero */}
               <div className="text-center mb-12">
-                <div className="flex items-center justify-center space-x-4 mb-6">
-                  <span className="text-6xl" aria-hidden>
+                <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-6">
+                  <span className="text-4xl md:text-6xl" aria-hidden>
                     {trackMeta.icon}
                   </span>
-                  <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100">
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100">
                     {trackDetails.title}
                   </h1>
                 </div>
                 {nonEmptyStr(trackDetails.vision) && (
-                  <p className="text-xl text-gray-600 dark:text-gray-400 max-w-4xl mx-auto leading-relaxed mb-8">
+                  <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-4xl mx-auto leading-relaxed mb-8 px-4">
                     {trackDetails.vision}
                   </p>
                 )}
 
                 {/* Stats */}
-                <div className="flex flex-wrap justify-center gap-8 mb-8">
+                <div className="grid grid-cols-2 md:flex md:flex-wrap md:justify-center gap-4 md:gap-8 mb-8">
                   {[
                     {
                       label: "Learning Levels",
@@ -549,16 +549,16 @@ export function Devcamp() {
                     },
                     { label: "Certificate", value: 1 },
                   ].map((s) => (
-                    <div key={s.label} className="text-center">
+                    <div key={s.label} className="text-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
                       <div
-                        className={`text-3xl font-bold mb-1 ${getTrackColorClasses(
+                        className={`text-2xl md:text-3xl font-bold mb-1 ${getTrackColorClasses(
                           trackMeta.color,
                           "text"
                         )}`}
                       >
                         {s.value}
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                      <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
                         {s.label}
                       </div>
                     </div>
@@ -568,7 +568,7 @@ export function Devcamp() {
 
               {/* Tabs */}
               <div className="flex justify-center mb-8">
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-1 border border-gray-200 dark:border-gray-700 shadow-sm">
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-1 border border-gray-200 dark:border-gray-700 shadow-sm w-full max-w-md">
                   <div className="flex space-x-1">
                     {[
                       {
@@ -590,7 +590,7 @@ export function Devcamp() {
                       <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id as ActiveTab)}
-                        className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                        className={`flex items-center justify-center space-x-1 md:space-x-2 px-2 md:px-6 py-2 md:py-3 rounded-lg font-medium transition-all flex-1 ${
                           activeTab === (tab.id as ActiveTab)
                             ? `${getTrackColorClasses(trackMeta.color, "bg")} text-white shadow-md`
                             : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
@@ -599,7 +599,7 @@ export function Devcamp() {
                         aria-current={activeTab === tab.id ? "page" : undefined}
                       >
                         {tab.icon}
-                        <span>{tab.label}</span>
+                        <span className="text-xs md:text-sm">{tab.label}</span>
                       </button>
                     ))}
                   </div>
@@ -727,39 +727,39 @@ export function Devcamp() {
                         >
                           <button
                             onClick={() => toggleLevel(lvlNum)}
-                            className={`w-full p-6 text-left transition-colors ${getTrackColorClasses(
+                            className={`w-full p-4 md:p-6 text-left transition-colors ${getTrackColorClasses(
                               trackMeta.color,
                               "hover"
                             )}`}
                             type="button"
                             aria-expanded={lvlNum ? expandedLevels.has(lvlNum) : false}
                           >
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center space-x-4">
+                            <div className="flex items-start justify-between">
+                              <div className="flex items-start space-x-3 md:space-x-4 flex-1 min-w-0">
                                 <div
-                                  className={`w-16 h-16 rounded-2xl ${getTrackColorClasses(
+                                  className={`w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl ${getTrackColorClasses(
                                     trackMeta.color,
                                     "bg"
-                                  )} flex items-center justify-center text-white font-bold text-2xl shadow-lg`}
+                                  )} flex items-center justify-center text-white font-bold text-lg md:text-2xl shadow-lg flex-shrink-0`}
                                   aria-hidden
                                 >
                                   {lvlNum ?? "?"}
                                 </div>
-                                <div>
-                                  <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                                <div className="min-w-0 flex-1">
+                                  <h3 className="text-lg md:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1 md:mb-2">
                                     Level {lvlNum ?? "?"}: {level.title ?? ""}
                                   </h3>
                                   {nonEmptyStr(level.goal) && (
-                                    <p className="text-gray-600 dark:text-gray-400 text-lg">
+                                    <p className="text-sm md:text-lg text-gray-600 dark:text-gray-400">
                                       {level.goal}
                                     </p>
                                   )}
                                 </div>
                               </div>
                               {lvlNum && expandedLevels.has(lvlNum) ? (
-                                <ChevronUpIcon className="h-6 w-6 text-gray-400 transition-transform" />
+                                <ChevronUpIcon className="h-5 w-5 md:h-6 md:w-6 text-gray-400 transition-transform flex-shrink-0 ml-2" />
                               ) : (
-                                <ChevronDownIcon className="h-6 w-6 text-gray-400 transition-transform" />
+                                <ChevronDownIcon className="h-5 w-5 md:h-6 md:w-6 text-gray-400 transition-transform flex-shrink-0 ml-2" />
                               )}
                             </div>
                           </button>
@@ -1061,22 +1061,22 @@ export function Devcamp() {
                         {trackDetails.outcome!.projects!.map((project, i) => (
                           <div
                             key={`proj-${i}-${project}`}
-                            className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl"
+                            className="flex items-start justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl"
                           >
-                            <div className="flex items-center space-x-4">
+                            <div className="flex items-start space-x-4 flex-1 min-w-0">
                               <div
                                 className={`w-10 h-10 rounded-xl ${getTrackColorClasses(
                                   trackMeta.color,
                                   "bg"
-                                )} flex items-center justify-center text-white font-bold`}
+                                )} flex items-center justify-center text-white font-bold flex-shrink-0`}
                               >
                                 {i + 1}
                               </div>
-                              <span className="font-medium text-gray-900 dark:text-gray-100">
+                              <span className="font-medium text-gray-900 dark:text-gray-100 flex-1">
                                 {project}
                               </span>
                             </div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">
+                            <div className="text-sm text-gray-500 dark:text-gray-400 flex-shrink-0 ml-4">
                               Week {i + 1}
                             </div>
                           </div>
@@ -1178,34 +1178,51 @@ export function Devcamp() {
   // ---------- Landing / Selection ----------
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {/* Hero */}
         <div className="text-center mb-16">
           <div className="mb-8 relative">
-            {/* ACM Logo - Top Left */}
-            <div className="absolute top-0 left-12 flex items-center space-x-2">
+            {/* Mobile Logo Row */}
+            <div className="flex justify-center items-center space-x-4 mb-6 md:hidden">
               <img
                 src="/acm.png"
                 alt="ACM"
-                className="h-20 w-auto opacity-100 hover:opacity-100 transition-opacity dark:filter dark:invert dark:brightness-0 dark:contrast-100"
+                className="h-20 w-auto opacity-100 transition-opacity dark:filter dark:invert dark:brightness-0 dark:contrast-100"
               />
-            </div>
-
-            {/* DevSource Logo - Top Right */}
-            <div className="absolute top-0 right-12 flex items-center space-x-2">
               <img
                 src="/devsource.png"
                 alt="DevSource"
-                className="h-20 w-auto opacity-100 hover:opacity-100 transition-opacity dark:filter dark:invert dark:brightness-0 dark:contrast-100"
+                className="h-20 w-auto opacity-100 transition-opacity dark:filter dark:invert dark:brightness-0 dark:contrast-100"
               />
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+            {/* Desktop Logos - Positioned Absolutely */}
+            <div className="hidden md:block">
+              {/* ACM Logo - Top Left */}
+              <div className="absolute top-0 left-12 flex items-center space-x-2">
+                <img
+                  src="/acm.png"
+                  alt="ACM"
+                  className="h-20 w-auto opacity-100 hover:opacity-100 transition-opacity dark:filter dark:invert dark:brightness-0 dark:contrast-100"
+                />
+              </div>
+
+              {/* DevSource Logo - Top Right */}
+              <div className="absolute top-0 right-12 flex items-center space-x-2">
+                <img
+                  src="/devsource.png"
+                  alt="DevSource"
+                  className="h-20 w-auto opacity-100 hover:opacity-100 transition-opacity dark:filter dark:invert dark:brightness-0 dark:contrast-100"
+                />
+              </div>
+            </div>
+
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-gray-900 dark:text-gray-100 mb-6 px-4">
               Dev<span className="text-blue-600 dark:text-blue-400">camp</span>
             </h1>
             <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-6" />
           </div>
-          <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed px-4">
             {userProfile?.profile?.coding_track
               ? "Welcome back to your coding journey. Continue learning or explore a new path."
               : "Transform your coding skills with our flagship intensive bootcamp. Choose your path and start building your future."}
@@ -1227,15 +1244,15 @@ export function Devcamp() {
         {/* Track Selection */}
         <div id="tracks">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4 px-4">
               {SHOW_TASKS && userProfile?.profile?.coding_track ? "Switch Your Track" : "Select Your Specialty"}
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
+            <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 px-4">
               Each track is carefully designed with hands-on projects and industry-relevant skills
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             {tracks.map((track) => {
               const userTrack: CodingTrackProfileValue = userProfile?.profile?.coding_track;
               const isCurrentTrack = SHOW_TASKS && (
@@ -1249,7 +1266,7 @@ export function Devcamp() {
               return (
                 <div
                   key={track.id}
-                  className={`bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 transition-all duration-500 hover:shadow-2xl group relative overflow-hidden ${
+                  className={`bg-white dark:bg-gray-800 rounded-2xl p-6 md:p-8 border-2 transition-all duration-500 hover:shadow-2xl group relative overflow-hidden ${
                     isCurrentTrack
                       ? `${getTrackColorClasses(track.color, "border")} shadow-lg`
                       : "border-gray-100 dark:border-gray-700 hover:border-gray-200 dark:hover:border-gray-600 shadow-lg"
