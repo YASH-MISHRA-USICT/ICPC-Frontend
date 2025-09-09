@@ -263,16 +263,6 @@ class ApiService {
     return this.makeRequest('/leaderboard/teams');
   }
 
-  // Notifications methods
-  async getNotifications(): Promise<ApiResponse<any[]>> {
-    return this.makeRequest('/notifications');
-  }
-
-  async markNotificationRead(notificationId: string): Promise<ApiResponse<any>> {
-    return this.makeRequest(`/notifications/${notificationId}/read`, {
-      method: 'PUT',
-    });
-  }
 
   // Badges methods
   async getBadges(userId?: string): Promise<ApiResponse<any[]>> {
@@ -329,6 +319,44 @@ class ApiService {
 
   async getVideoCategories(): Promise<ApiResponse<string[]>> {
     return this.makeRequest('/videos/categories');
+  }
+
+  // Chatbot methods - separate method for different base URL
+  async chatbot(question: string): Promise<ApiResponse<any>> {
+    try {
+      const authHeader = this.getAuthHeader();
+      
+      const response = await fetch('https://innoverse-chatbot.onrender.com/chat', {
+        method: 'POST',
+        mode: 'cors', // Explicitly set CORS mode
+        headers: {
+          'Content-Type': 'application/json',
+          ...(authHeader && { 'Authorization': authHeader }),
+        },
+        body: JSON.stringify({ question }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return {
+          success: false,
+          error: data.error || `HTTP ${response.status}`,
+        };
+      }
+
+      return {
+        success: true,
+        data: data,
+        message: data.message,
+      };
+    } catch (error: any) {
+      console.error('CORS or network error:', error);
+      return {
+        success: false,
+        error: 'Unable to connect to chatbot service. Please try again later.',
+      };
+    }
   }
 }
 

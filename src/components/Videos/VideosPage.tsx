@@ -3,6 +3,7 @@ import { Play, Clock, Eye, BookOpen } from 'lucide-react';
 import { apiService, Video } from '../../lib/api';
 import { LoadingSpinner } from '../UI/LoadingSpinner';
 import { useAuth } from '../../hooks/useAuth';
+import { Chatbot } from '../UI/Chatbot';
 
 export function VideosPage(): JSX.Element {
   const { user } = useAuth();
