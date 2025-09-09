@@ -326,7 +326,7 @@ class ApiService {
     try {
       const authHeader = this.getAuthHeader();
       
-      const response = await fetch('https://innoverse-chatbot.onrender.com/chat', {
+      const response = await fetch('http://127.0.0.1:8000/chat', {
         method: 'POST',
         mode: 'cors', // Explicitly set CORS mode
         headers: {

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
 import { Code2, Users, Trophy, BookOpen, Sparkles } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { useNavigate } from "react-router-dom";
 
 // Google Sign-In Button Component
 function GoogleSignInButton() {
@@ -41,6 +42,15 @@ function GoogleSignInButton() {
 }
 
 export function LoginPage() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/devcamp", { replace: true });
+    }
+  }, [user, navigate]);
+
   const features = [
     {
       icon: Code2,
