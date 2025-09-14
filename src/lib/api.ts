@@ -326,7 +326,7 @@ class ApiService {
     try {
       const authHeader = this.getAuthHeader();
 
-      const response = await fetch('http://nocgcw0oo400wosckk4k084g.161.118.162.87.sslip.io/chat', {
+      const response = await fetch('http://chat-innoverse.yashmishra.xyz/chat', {
         method: 'POST',
         mode: 'cors', // Explicitly set CORS mode
         headers: {
