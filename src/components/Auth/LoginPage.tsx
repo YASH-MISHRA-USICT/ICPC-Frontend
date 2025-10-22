@@ -55,7 +55,7 @@ export function LoginPage() {
     {
       icon: Code2,
       title: 'Fundamental AI Learning',
-      description: 'From basics to advanced your AI Journey starts here'
+      description: 'From basics to advanced your problem solving journey starts here'
     },
     {
       icon: Users,
