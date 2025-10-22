@@ -76,7 +76,6 @@ export function Navbar() {
   const navItems = [
     { name: 'Tasks', href: '/tasks', icon: BookOpen },
     { name: 'Leaderboard', href: '/leaderboard', icon: Trophy },
-    { name: 'Forum', href: '/forum', icon: MessageSquare },
     { name: 'Resources', href: '/resources', icon: BookOpen },
     { name: 'Videos', href: '/videos', icon: PlayIcon },
   ];

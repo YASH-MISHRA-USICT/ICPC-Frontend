@@ -7,11 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 // Available coding tracks/teams - remove disabled property and allow all tracks
 const AVAILABLE_TRACKS = [
-  { id: 'webdev', name: 'Web Development' },
-  { id: 'app', name: 'App Development' },
-  { id: 'game', name: 'Game Development' },
-  { id: 'ai', name: 'Data Science & AI' },
-  { id: 'dsa', name: 'Data Structures & Algorithms' }
+  { id: 'ai', name: 'Data Science & AI' }
 ];
 
 interface ProfileData {
@@ -39,7 +35,7 @@ export function ProfilePage() {
     course: '',
     year: '',
     interests: [],
-    coding_track: '',
+    coding_track: 'ai',
   });
 
   // Load profile data
@@ -56,11 +52,11 @@ export function ProfilePage() {
         course: profile.profile.course || '',
         year: profile.profile.year || '',
         interests: profile.profile.interests || [],
-        coding_track: profile.profile.coding_track || 'dsa', // Default to DSA
+        coding_track: 'ai'
       });
     } else {
       // Set default DSA track for new profiles
-      setFormData(prev => ({ ...prev, coding_track: 'dsa' }));
+      setFormData(prev => ({ ...prev, coding_track: 'ai' }));
     }
   }, [profile]);
 
