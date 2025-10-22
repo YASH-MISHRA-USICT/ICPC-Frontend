@@ -85,17 +85,17 @@ export function LoginPage() {
                 <div className="flex justify-center mb-6">
                   <img
                     src="/logo.png"   // place logo.png inside public/
-                    alt="Innovateai Logo"
+                    alt="ICPC Logo"
                     width={64}
                     height={64}
                     className="rounded-2xl"
                   />
                 </div>
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                  Welcome to <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Innovate AI</span>
+                  Welcome to <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">ICPC</span>
                 </h1>
                 <p className="text-lg text-gray-600 mb-8">
-                  Join ACM Innovate AI community and accelerate your AI journey
+                  Join ACM ICPC community and accelerate your AI journey
                 </p>
               </div>
 
