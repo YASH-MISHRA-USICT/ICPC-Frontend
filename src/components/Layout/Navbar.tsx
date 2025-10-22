@@ -74,7 +74,7 @@ export function Navbar() {
   };
 
   const navItems = [
-    { name: 'Dashboard', href: '/dashboard', icon: Code2}
+    { name: 'Dashboard', href: '/dashboard', icon: Code2 },
     { name: 'Tasks', href: '/tasks', icon: BookOpen },
     { name: 'Leaderboard', href: '/leaderboard', icon: Trophy },
     { name: 'Resources', href: '/resources', icon: BookOpen },
