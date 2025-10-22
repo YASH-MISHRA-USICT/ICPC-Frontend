@@ -94,8 +94,8 @@ export function Navbar() {
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
             <Link to="/devcamp" className="flex items-center space-x-2">
-              <img src="/logo.png" alt="Innoverse Logo" className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl" />
-              <span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 hidden xs:block">Innoverse</span>
+              <img src="/logo.png" alt="Innovateai Logo" className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl" />
+              <span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 hidden xs:block">Innovate AI</span>
             </Link>
           </div>
 

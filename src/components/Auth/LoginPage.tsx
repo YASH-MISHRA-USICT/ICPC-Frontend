@@ -54,8 +54,8 @@ export function LoginPage() {
   const features = [
     {
       icon: Code2,
-      title: 'Choose Your Track',
-      description: 'Web Dev, AI/ML, Game Dev, Mobile, Data Science, or DevOps'
+      title: 'Fundamental AI Learning',
+      description: 'From basics to advanced your AI Journey starts here'
     },
     {
       icon: Users,
@@ -85,17 +85,17 @@ export function LoginPage() {
                 <div className="flex justify-center mb-6">
                   <img
                     src="/logo.png"   // place logo.png inside public/
-                    alt="Innoverse Logo"
+                    alt="Innovateai Logo"
                     width={64}
                     height={64}
                     className="rounded-2xl"
                   />
                 </div>
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                  Welcome to <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Innoverse</span>
+                  Welcome to <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Innovate AI</span>
                 </h1>
                 <p className="text-lg text-gray-600 mb-8">
-                  Join our college coding community and accelerate your programming journey
+                  Join ACM Innovate AI community and accelerate your AI journey
                 </p>
               </div>
 
