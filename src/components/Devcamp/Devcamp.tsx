@@ -1,4 +1,4 @@
-// Devcamp.tsx
+// Bootcamp.tsx
 import React, { useEffect, useMemo, useState } from "react";
 import {
   ChevronDownIcon,
@@ -235,7 +235,7 @@ const trackModules: Record<TrackMeta["id"], TrackDetails> = {
   "dsa": dsaTrack as TrackDetails,
 };
 
-export function Devcamp() {
+export function Bootcamp() {
   const { user, profile } = useAuth();
   const [selectedTrack, setSelectedTrack] = useState<TrackMeta["id"] | null>(
     null

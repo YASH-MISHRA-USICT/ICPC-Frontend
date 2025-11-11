@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'r
 import { useAuth, AuthProvider } from './hooks/useAuth';
 import { LoadingSpinner } from './components/UI/LoadingSpinner';
 import { Navbar } from './components/Layout/Navbar';
-import { Devcamp } from './components/Devcamp/Devcamp';
+import { Bootcamp } from './components/Devcamp/Devcamp';
 import { Chatbot } from './components/UI/Chatbot';
 import { LoginPage } from './components/Auth/LoginPage';
 import { Dashboard } from './components/Dashboard/Dashboard';
@@ -25,7 +25,7 @@ function AppRoutes(): JSX.Element {
   const location = useLocation();
 
   // Pages where chatbot should not appear
-  const excludedPaths = ['/login', '/auth', '/register', '/'];
+  const excludedPaths = ['/login', '/auth', '/register', '/', '/bootcamp', '/devcamp'];
   const shouldShowChatbot = user && !excludedPaths.includes(location.pathname);
 
   if (loading) {
@@ -52,7 +52,8 @@ function AppRoutes(): JSX.Element {
           {/* Protected routes */}
           {user ? (
             <>
-              <Route path="/devcamp" element={<Devcamp />} />
+              <Route path="/bootcamp" element={<Bootcamp />} />
+              <Route path="/devcamp" element={<Bootcamp />} /> {/* Redirect old path */}
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/videos" element={<VideosPage />} />
               <Route path="/tasks" element={<TasksPage />} />
@@ -64,7 +65,7 @@ function AppRoutes(): JSX.Element {
               {profile?.role === 'admin' && (
                 <Route path="/admin" element={<AdminPanel />} />
               )}
-              <Route path="*" element={<Navigate to="/devcamp" replace />} />
+              <Route path="*" element={<Navigate to="/bootcamp" replace />} />
             </>
           ) : (
             <Route path="*" element={<Navigate to="/login" replace />} />
