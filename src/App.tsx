@@ -52,6 +52,7 @@ function AppRoutes(): JSX.Element {
           {/* Protected routes */}
           {user ? (
             <>
+              <Route path="/devcamp" element={<Devcamp />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/videos" element={<VideosPage />} />
               <Route path="/tasks" element={<TasksPage />} />
@@ -63,7 +64,7 @@ function AppRoutes(): JSX.Element {
               {profile?.role === 'admin' && (
                 <Route path="/admin" element={<AdminPanel />} />
               )}
-              <Route path="*" element={<Navigate to="/dashboard" replace />} />
+              <Route path="*" element={<Navigate to="/devcamp" replace />} />
             </>
           ) : (
             <Route path="*" element={<Navigate to="/login" replace />} />

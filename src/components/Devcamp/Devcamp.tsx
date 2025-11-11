@@ -21,9 +21,11 @@ import webDevTrack from "../../data/tracks/webDevTrack";
 import aiMlTrack from "../../data/tracks/aiMlTrack";
 import mobileAppDevTrack from "../../data/tracks/mobileAppDevTrack";
 import gameDevTrack from "../../data/tracks/gameDevTrack";
+import { dsaTrack } from "../../data/tracks/dsaTrack.js";
 
 // ---------- Configuration ----------
 const SHOW_TASKS = true; // Change this to true to enable tasks
+const DSA_BOOTCAMP_MODE = true; // Set to true for DSA-focused bootcamp
 
 // ---------- Tykl;pes ----------
 type ResourceType = "video" | "pdf" | "link";
@@ -111,7 +113,7 @@ interface TrackDetails {
 }
 
 interface TrackMeta {
-  id: "web-dev" | "ai-ml" | "game-dev" | "app-dev";
+  id: "web-dev" | "ai-ml" | "game-dev" | "app-dev" | "dsa";
   title: string;
   description: string;
   color: "blue" | "green" | "red" | "purple";
@@ -174,43 +176,55 @@ const getResourceIcon = (type?: ResourceType) => {
   }
 };
 
-const tracks: TrackMeta[] = [
-  {
-    id: "web-dev",
-    title: "Web Development",
-    description:
-      "Master modern web technologies including React, Node.js, and full-stack development.",
-    color: "blue",
-    icon: "🌐",
-    totalWeeks: 5,
-  },
-  {
-    id: "ai-ml",
-    title: "AI/ML",
-    description:
-      "Dive into artificial intelligence and machine learning with Python, TensorFlow, and more.",
-    color: "green",
-    icon: "🤖",
-    totalWeeks: 5,
-  },
-  {
-    id: "game-dev",
-    title: "Game Development",
-    description: "Learn game design, development, and deployment using Godot.",
-    color: "red",
-    icon: "🎮",
-    totalWeeks: 5,
-  },
-  {
-    id: "app-dev",
-    title: "App Development",
-    description:
-      "Build mobile applications using React Native, Flutter, and native development.",
-    color: "purple",
-    icon: "📱",
-    totalWeeks: 5,
-  },
-];
+const tracks: TrackMeta[] = DSA_BOOTCAMP_MODE
+  ? [
+      {
+        id: "dsa",
+        title: "Data Structures & Algorithms",
+        description:
+          "Master DSA concepts, competitive programming, and ace coding interviews at top tech companies.",
+        color: "purple",
+        icon: "🧮",
+        totalWeeks: 12,
+      },
+    ]
+  : [
+      {
+        id: "web-dev",
+        title: "Web Development",
+        description:
+          "Master modern web technologies including React, Node.js, and full-stack development.",
+        color: "blue",
+        icon: "🌐",
+        totalWeeks: 5,
+      },
+      {
+        id: "ai-ml",
+        title: "AI/ML",
+        description:
+          "Dive into artificial intelligence and machine learning with Python, TensorFlow, and more.",
+        color: "green",
+        icon: "🤖",
+        totalWeeks: 5,
+      },
+      {
+        id: "game-dev",
+        title: "Game Development",
+        description: "Learn game design, development, and deployment using Godot.",
+        color: "red",
+        icon: "🎮",
+        totalWeeks: 5,
+      },
+      {
+        id: "app-dev",
+        title: "App Development",
+        description:
+          "Build mobile applications using React Native, Flutter, and native development.",
+        color: "purple",
+        icon: "📱",
+        totalWeeks: 5,
+      },
+    ];
 
 // Map string id → module (typed)
 const trackModules: Record<TrackMeta["id"], TrackDetails> = {
@@ -218,6 +232,7 @@ const trackModules: Record<TrackMeta["id"], TrackDetails> = {
   "ai-ml": aiMlTrack as TrackDetails,
   "app-dev": mobileAppDevTrack as TrackDetails,
   "game-dev": gameDevTrack as TrackDetails,
+  "dsa": dsaTrack as TrackDetails,
 };
 
 export function Devcamp() {
@@ -252,8 +267,7 @@ export function Devcamp() {
           if (userTrack === "app") mapped = "app-dev";
           if (userTrack === "ai") mapped = "ai-ml";
           if (userTrack === "game") mapped = "game-dev";
-          // historical "dsa" case → pick a sensible default
-          if (userTrack === "dsa") mapped = "web-dev";
+          if (userTrack === "dsa") mapped = "dsa";
 
           if (mapped) setSelectedTrack(mapped);
         }
@@ -350,6 +364,7 @@ export function Devcamp() {
       if (trackId === "app-dev") profileTrackValue = "app";
       if (trackId === "ai-ml") profileTrackValue = "ai";
       if (trackId === "game-dev") profileTrackValue = "game";
+      if (trackId === "dsa") profileTrackValue = "dsa";
 
       const updatedProfile = {
         ...userProfile,
@@ -1097,7 +1112,7 @@ export function Devcamp() {
 
                     <div className="grid md:grid-cols-2 gap-8">
                       <div>
-                        <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 text-red-600 dark:text-red-400">
+                        <h4 className="font-semibold mb-3 text-red-600 dark:text-red-400">
                           Mandatory Submissions:
                         </h4>
                         <ul className="space-y-2">
@@ -1118,7 +1133,7 @@ export function Devcamp() {
                       </div>
 
                       <div>
-                        <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 text-green-600 dark:text-green-400">
+                        <h4 className="font-semibold mb-3 text-green-600 dark:text-green-400">
                           Preferred Submissions:
                         </h4>
                         <ul className="space-y-2">
@@ -1218,14 +1233,28 @@ export function Devcamp() {
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-gray-900 dark:text-gray-100 mb-6 px-4">
-              Dev<span className="text-blue-600 dark:text-blue-400">camp</span>
+              {DSA_BOOTCAMP_MODE ? (
+                <>
+                  DSA <span className="text-purple-600 dark:text-purple-400">Bootcamp</span>
+                </>
+              ) : (
+                <>
+                  Dev<span className="text-blue-600 dark:text-blue-400">camp</span>
+                </>
+              )}
             </h1>
             <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-6" />
           </div>
           <p className="text-lg md:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed px-4">
-            {userProfile?.profile?.coding_track
-              ? "Welcome back to your coding journey. Continue learning or explore a new path."
-              : "Transform your coding skills with our flagship intensive bootcamp. Choose your path and start building your future."}
+            {DSA_BOOTCAMP_MODE ? (
+              userProfile?.profile?.coding_track === "dsa"
+                ? "Welcome back to your DSA journey! Master algorithms and ace your coding interviews."
+                : "Master Data Structures & Algorithms. Prepare for technical interviews at top tech companies like Google, Microsoft, and Amazon. Build problem-solving skills through 150+ curated problems."
+            ) : (
+              userProfile?.profile?.coding_track
+                ? "Welcome back to your coding journey. Continue learning or explore a new path."
+                : "Transform your coding skills with our flagship intensive bootcamp. Choose your path and start building your future."
+            )}
           </p>
 
           {!userProfile?.profile?.coding_track && (
@@ -1236,8 +1265,31 @@ export function Devcamp() {
               className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
               type="button"
             >
-              Choose Your Learning Path
+              {DSA_BOOTCAMP_MODE ? "Start DSA Bootcamp" : "Choose Your Learning Path"}
             </button>
+          )}
+          
+          {/* DSA Bootcamp Stats */}
+          {DSA_BOOTCAMP_MODE && (
+            <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+              {[
+                { label: "Problems", value: "150+", icon: "🎯" },
+                { label: "Weeks", value: "12", icon: "📅" },
+                { label: "Topics", value: "25+", icon: "📚" },
+                { label: "Projects", value: "5", icon: "🏆" },
+              ].map((stat) => (
+                <div
+                  key={stat.label}
+                  className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg border border-gray-200 dark:border-gray-700 hover:scale-105 transition-transform"
+                >
+                  <div className="text-3xl mb-2">{stat.icon}</div>
+                  <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
+                </div>
+              ))}
+            </div>
           )}
         </div>
 
@@ -1245,10 +1297,16 @@ export function Devcamp() {
         <div id="tracks">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4 px-4">
-              {SHOW_TASKS && userProfile?.profile?.coding_track ? "Switch Your Track" : "Select Your Specialty"}
+              {DSA_BOOTCAMP_MODE
+                ? (SHOW_TASKS && userProfile?.profile?.coding_track === "dsa"
+                    ? "Your DSA Learning Path"
+                    : "Master Data Structures & Algorithms")
+                : (SHOW_TASKS && userProfile?.profile?.coding_track ? "Switch Your Track" : "Select Your Specialty")}
             </h2>
             <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 px-4">
-              Each track is carefully designed with hands-on projects and industry-relevant skills
+              {DSA_BOOTCAMP_MODE
+                ? "A comprehensive 12-week program covering everything from basics to advanced algorithms"
+                : "Each track is carefully designed with hands-on projects and industry-relevant skills"}
             </p>
           </div>
 
@@ -1260,8 +1318,22 @@ export function Devcamp() {
                 (userTrack === "app" && track.id === "app-dev") ||
                 (userTrack === "ai" && track.id === "ai-ml") ||
                 (userTrack === "game" && track.id === "game-dev") ||
-                (userTrack === "dsa" && track.id === "web-dev")
+                (userTrack === "dsa" && track.id === "dsa")
               );
+              
+              const trackFeatures = DSA_BOOTCAMP_MODE && track.id === "dsa"
+                ? [
+                    "150+ LeetCode/Codeforces Problems",
+                    "Interview Preparation",
+                    "Competitive Programming",
+                    "Certificate of Excellence",
+                  ]
+                : [
+                    "Hands-on Projects",
+                    "Industry Mentorship",
+                    "Career Guidance",
+                    "Certificate of Completion",
+                  ];
 
               return (
                 <div
@@ -1307,12 +1379,7 @@ export function Devcamp() {
 
                   {/* Features */}
                   <div className="space-y-3 mb-8">
-                    {[
-                      "Hands-on Projects",
-                      "Industry Mentorship",
-                      "Career Guidance",
-                      "Certificate of Completion",
-                    ].map((feature) => (
+                    {trackFeatures.map((feature) => (
                       <div key={feature} className="flex items-center space-x-3">
                         <CheckCircleIcon className="h-4 w-4 text-green-500 flex-shrink-0" />
                         <span className="text-gray-700 dark:text-gray-300 text-sm">
@@ -1356,17 +1423,40 @@ export function Devcamp() {
         {!userProfile?.profile?.coding_track && SHOW_TASKS && (
           <div className="text-center mt-16 py-12 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/10 dark:to-purple-900/10 rounded-3xl border border-blue-100 dark:border-blue-800">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-              Ready to Start Your Journey?
+              {DSA_BOOTCAMP_MODE
+                ? "Ready to Master DSA and Ace Interviews?"
+                : "Ready to Start Your Journey?"}
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">
-              Join thousands of developers who have transformed their careers through our intensive bootcamp program.
+              {DSA_BOOTCAMP_MODE
+                ? "Join hundreds of students who have cracked interviews at top tech companies through our comprehensive DSA bootcamp. Get mentored by ACM ICPC participants and industry experts."
+                : "Join thousands of developers who have transformed their careers through our intensive bootcamp program."}
             </p>
+            {DSA_BOOTCAMP_MODE && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto mb-8">
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md">
+                  <div className="text-3xl mb-2">💼</div>
+                  <div className="font-bold text-gray-900 dark:text-gray-100">Interview Ready</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">FAANG preparation</div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md">
+                  <div className="text-3xl mb-2">🏅</div>
+                  <div className="font-bold text-gray-900 dark:text-gray-100">Contest Ready</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">CodeChef, Codeforces</div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md">
+                  <div className="text-3xl mb-2">📈</div>
+                  <div className="font-bold text-gray-900 dark:text-gray-100">Skill Growth</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Problem solver</div>
+                </div>
+              </div>
+            )}
             <div className="flex justify-center space-x-4">
-              <button className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors" type="button">
-                Get Started Today
+              <button className="bg-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-700 transition-colors" type="button">
+                {DSA_BOOTCAMP_MODE ? "Enroll in DSA Bootcamp" : "Get Started Today"}
               </button>
               <button className="border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-6 py-3 rounded-xl font-semibold hover:border-gray-400 dark:hover:border-gray-500 transition-colors" type="button">
-                Learn More
+                View Curriculum
               </button>
             </div>
           </div>
