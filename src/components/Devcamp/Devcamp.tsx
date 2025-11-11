@@ -185,7 +185,7 @@ const tracks: TrackMeta[] = DSA_BOOTCAMP_MODE
           "Master DSA concepts, competitive programming, and ace coding interviews at top tech companies.",
         color: "purple",
         icon: "🧮",
-        totalWeeks: 12,
+        totalWeeks: 4,
       },
     ]
   : [
@@ -1249,7 +1249,7 @@ export function Bootcamp() {
             {DSA_BOOTCAMP_MODE ? (
               userProfile?.profile?.coding_track === "dsa"
                 ? "Welcome back to your DSA journey! Master algorithms and ace your coding interviews."
-                : "Master Data Structures & Algorithms. Prepare for technical interviews at top tech companies like Google, Microsoft, and Amazon. Build problem-solving skills through 150+ curated problems."
+                : "Master Data Structures & Algorithms. Prepare for technical interviews at top tech companies like Google, Microsoft, and Amazon. Build problem-solving skills through 100+ curated problems in just 4 weeks."
             ) : (
               userProfile?.profile?.coding_track
                 ? "Welcome back to your coding journey. Continue learning or explore a new path."
@@ -1273,10 +1273,10 @@ export function Bootcamp() {
           {DSA_BOOTCAMP_MODE && (
             <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
               {[
-                { label: "Problems", value: "150+", icon: "🎯" },
-                { label: "Weeks", value: "12", icon: "📅" },
-                { label: "Topics", value: "25+", icon: "📚" },
-                { label: "Projects", value: "5", icon: "🏆" },
+                { label: "Problems", value: "100+", icon: "🎯" },
+                { label: "Weeks", value: "4", icon: "📅" },
+                { label: "Topics", value: "15+", icon: "📚" },
+                { label: "Projects", value: "4", icon: "🏆" },
               ].map((stat) => (
                 <div
                   key={stat.label}
@@ -1305,7 +1305,7 @@ export function Bootcamp() {
             </h2>
             <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 px-4">
               {DSA_BOOTCAMP_MODE
-                ? "A comprehensive 12-week program covering everything from basics to advanced algorithms"
+                ? "An intensive 4-week program covering everything from basics to advanced algorithms"
                 : "Each track is carefully designed with hands-on projects and industry-relevant skills"}
             </p>
           </div>
@@ -1323,7 +1323,7 @@ export function Bootcamp() {
               
               const trackFeatures = DSA_BOOTCAMP_MODE && track.id === "dsa"
                 ? [
-                    "150+ LeetCode/Codeforces Problems",
+                    "100+ LeetCode/Codeforces Problems",
                     "Interview Preparation",
                     "Competitive Programming",
                     "Certificate of Excellence",

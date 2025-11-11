@@ -6,9 +6,9 @@ export const dsaTrack = {
   description: 'Master DSA concepts, problem-solving techniques, and ace coding interviews with hands-on practice.',
   color: 'purple',
   icon: '🧮',
-  totalWeeks: 8,
+  totalWeeks: 4,
   
-  vision: `The vision of this DSA Bootcamp is to transform you from a coding beginner to a confident problem solver who can tackle complex algorithmic challenges. This intensive program is designed to build strong foundations in data structures and algorithms, prepare you for technical interviews at top tech companies, and develop a systematic approach to problem-solving. Through hands-on practice, real-world applications, and competitive programming, you'll gain the skills that top tech companies look for.`,
+  vision: `The vision of this DSA Bootcamp is to transform you from a coding beginner to a confident problem solver who can tackle complex algorithmic challenges. This intensive 4-week program is designed to build strong foundations in data structures and algorithms, prepare you for technical interviews at top tech companies, and develop a systematic approach to problem-solving. Through hands-on practice, real-world applications, and competitive programming, you'll gain the skills that top tech companies look for.`,
   
   whatYouWillGain: [
     'Deep understanding of fundamental and advanced data structures (Arrays, Linked Lists, Trees, Graphs, Heaps, etc.)',
@@ -709,7 +709,7 @@ export const dsaTrack = {
   
   outcome: {
     projects: [
-      '150+ LeetCode problems solved (Easy, Medium, Hard)',
+      '100+ LeetCode problems solved (Easy, Medium, Hard)',
       'GitHub repository with all solutions and explanations',
       'Participation in 2+ online coding contests',
       'Complete DSA interview preparation',
@@ -718,7 +718,7 @@ export const dsaTrack = {
     
     submissionRequirements: {
       mandatory: [
-        'GitHub repository with at least 150 solved problems',
+        'GitHub repository with at least 100 solved problems',
         'LeetCode profile showing progress',
         'Weekly problem-solving tracker (Excel/Notion)',
         'Participation certificate from at least 2 contests'
@@ -746,7 +746,7 @@ export const dsaTrack = {
       title: 'DSA Bootcamp Certificate of Excellence',
       requirements: [
         'Complete all 4 levels',
-        'Solve minimum 150 problems across all topics',
+        'Solve minimum 100 problems across all topics',
         'Participate in at least 2 coding contests',
         'Submit GitHub repository with organized solutions',
         'Maintain problem-solving tracker',
