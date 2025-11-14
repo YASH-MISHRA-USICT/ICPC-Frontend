@@ -37,7 +37,7 @@ interface ResourceLink {
   description?: string;
 }
 
-interface ProjectBlock {
+interface ContestBlock {
   title?: string;
   description?: string;
   coreFeatures?: string[];
@@ -48,7 +48,7 @@ interface WeekBlock {
   week?: number;
   topics?: string[];
   resources?: ResourceLink[];
-  project?: ProjectBlock;
+  contest?: ContestBlock;
 }
 
 interface SetupOption {
@@ -89,7 +89,7 @@ interface SubmissionReqs {
 }
 
 interface Outcome {
-  projects?: string[];
+  contests?: string[];
   submissionRequirements?: SubmissionReqs;
   certification?: {
     title?: string;
@@ -121,7 +121,7 @@ interface TrackMeta {
   totalWeeks: number;
 }
 
-type ActiveTab = "overview" | "curriculum" | "projects";
+type ActiveTab = "overview" | "curriculum" | "contests";
 
 type CodingTrackProfileValue = "webdev" | "app" | "ai" | "game" | "dsa" | undefined;
 
@@ -314,7 +314,7 @@ export function Bootcamp() {
         : [],
       whoCanSkipWhat: isArr(td.whoCanSkipWhat) ? td.whoCanSkipWhat : [],
       outcome: {
-        projects: isArr<string>(outcome.projects) ? outcome.projects : [],
+        contests: isArr<string>(outcome.contests) ? outcome.contests : [],
         submissionRequirements: {
           mandatory: isArr<string>(subs.mandatory) ? subs.mandatory : [],
           preferred: isArr<string>(subs.preferred) ? subs.preferred : [],
@@ -343,7 +343,11 @@ export function Bootcamp() {
     if (typeof level !== "number") return;
     setExpandedLevels((prev) => {
       const next = new Set(prev);
-      next.has(level) ? next.delete(level) : next.add(level);
+      if (next.has(level)) {
+        next.delete(level);
+      } else {
+        next.add(level);
+      }
       return next;
     });
   };
@@ -521,9 +525,9 @@ export function Bootcamp() {
                     </div>
                     <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-sm">
                       <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                        {trackDetails.outcome?.projects?.length ?? 0}
+                        {trackDetails.outcome?.contests?.length ?? 0}
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">Projects</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">Contests</div>
                     </div>
                   </div>
                 </div>
@@ -559,8 +563,8 @@ export function Bootcamp() {
                       value: trackDetails.totalWeeks ?? 0,
                     },
                     {
-                      label: "Major Projects",
-                      value: trackDetails.outcome?.projects?.length ?? 0,
+                      label: "Major Contests",
+                      value: trackDetails.outcome?.contests?.length ?? 0,
                     },
                     { label: "Certificate", value: 1 },
                   ].map((s) => (
@@ -597,8 +601,8 @@ export function Bootcamp() {
                         icon: <AcademicCapIcon className="w-4 h-4" />,
                       },
                       {
-                        id: "projects",
-                        label: "Projects",
+                        id: "contests",
+                        label: "Contests",
                         icon: <BookOpenIcon className="w-4 h-4" />,
                       },
                     ].map((tab) => (
@@ -873,9 +877,9 @@ export function Bootcamp() {
                               {isArr<WeekBlock>(level.weeks) &&
                                 level.weeks.map((week) => {
                                   const wk = week.week ?? 0;
-                                  const projectTitle = week.project?.title ?? "";
+                                  const contestTitle = week.contest?.title ?? "";
                                   return (
-                                    <div key={`wk-${wk}-${projectTitle}`} className="mb-8">
+                                    <div key={`wk-${wk}-${contestTitle}`} className="mb-8">
                                       <div className="flex items-center space-x-3 mb-4">
                                         <div
                                           className={`w-10 h-10 rounded-xl ${getTrackColorClasses(
@@ -887,7 +891,7 @@ export function Bootcamp() {
                                         </div>
                                         <h5 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                                           Week {wk || "?"}
-                                          {projectTitle ? ` - ${projectTitle}` : ""}
+                                          {contestTitle ? ` - ${contestTitle}` : ""}
                                         </h5>
                                       </div>
 
@@ -953,29 +957,29 @@ export function Bootcamp() {
                                           </div>
                                         )}
 
-                                      {week.project && (
+                                      {week.contest && (
                                         <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/10 dark:to-purple-900/10 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
                                           <h6 className="font-bold text-gray-900 dark:text-gray-100 mb-2 flex items-center space-x-2">
                                             <BookOpenIcon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                                             <span>
-                                              Project:{" "}
-                                              {nonEmptyStr(week.project.title) || "Untitled Project"}
+                                              Contest:{" "}
+                                              {nonEmptyStr(week.contest.title) || "Untitled Contest"}
                                             </span>
                                           </h6>
-                                          {nonEmptyStr(week.project.description) && (
+                                          {nonEmptyStr(week.contest.description) && (
                                             <p className="text-gray-700 dark:text-gray-300 mb-4">
-                                              {week.project.description}
+                                              {week.contest.description}
                                             </p>
                                           )}
 
-                                          {isArr<string>(week.project.coreFeatures) &&
-                                            week.project.coreFeatures.length > 0 && (
+                                          {isArr<string>(week.contest.coreFeatures) &&
+                                            week.contest.coreFeatures.length > 0 && (
                                               <div className="mb-4">
                                                 <span className="font-semibold text-gray-900 dark:text-gray-100 mb-2 block">
                                                   Core Features:
                                                 </span>
                                                 <ul className="space-y-1">
-                                                  {week.project.coreFeatures.map((f, fi) => (
+                                                  {week.contest.coreFeatures.map((f, fi) => (
                                                     <li
                                                       key={`feat-${wk}-${fi}`}
                                                       className="flex items-start space-x-2"
@@ -990,14 +994,14 @@ export function Bootcamp() {
                                               </div>
                                             )}
 
-                                          {isArr<ResourceLink>(week.project.resources) &&
-                                            week.project.resources.length > 0 && (
+                                          {isArr<ResourceLink>(week.contest.resources) &&
+                                            week.contest.resources.length > 0 && (
                                               <div>
                                                 <span className="font-semibold text-gray-900 dark:text-gray-100 mb-2 block">
-                                                  Project Resources:
+                                                  Contest Resources:
                                                 </span>
                                                 <div className="grid md:grid-cols-2 gap-2">
-                                                  {week.project.resources.map((res, ri) => (
+                                                  {week.contest.resources.map((res, ri) => (
                                                     <a
                                                       key={`pres-${wk}-${ri}-${res.title ?? "pr"}`}
                                                       href={res.url}
@@ -1053,7 +1057,7 @@ export function Bootcamp() {
                 </div>
               )}
 
-              {activeTab === "projects" && (
+              {activeTab === "contests" && (
                 <div className="space-y-6">
                   <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg border border-gray-100 dark:border-gray-700">
                     <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center space-x-3">
@@ -1066,120 +1070,35 @@ export function Bootcamp() {
                         <BookOpenIcon className="w-6 h-6" />
                       </div>
                       <span>
-                        Major Projects ({trackDetails.outcome?.projects?.length ?? 0})
+                        Major Contests ({trackDetails.outcome?.contests?.length ?? 0})
                       </span>
                     </h3>
 
-                    {isArr<string>(trackDetails.outcome?.projects) &&
-                    (trackDetails.outcome?.projects?.length ?? 0) > 0 ? (
+                    {isArr<string>(trackDetails.outcome?.contests) &&
+                    (trackDetails.outcome?.contests?.length ?? 0) > 0 ? (
                       <div className="space-y-6">
-                        {trackDetails.outcome!.projects!.map((project, i) => (
+                        {trackDetails.outcome.contests.map((contest, i) => (
                           <div
-                            key={`proj-${i}-${project}`}
-                            className="flex items-start justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl"
+                            key={`contest-${i}-${contest}`}
+                            className="flex items-center space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl"
                           >
-                            <div className="flex items-start space-x-4 flex-1 min-w-0">
-                              <div
-                                className={`w-10 h-10 rounded-xl ${getTrackColorClasses(
-                                  trackMeta.color,
-                                  "bg"
-                                )} flex items-center justify-center text-white font-bold flex-shrink-0`}
-                              >
-                                {i + 1}
-                              </div>
-                              <span className="font-medium text-gray-900 dark:text-gray-100 flex-1">
-                                {project}
-                              </span>
+                            <div className={`w-10 h-10 rounded-xl ${getTrackColorClasses(
+                              trackMeta.color,
+                              "bg"
+                            )} flex items-center justify-center text-white font-bold flex-shrink-0`}>
+                              {i + 1}
                             </div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400 flex-shrink-0 ml-4">
-                              Week {i + 1}
-                            </div>
+                            <span className="font-medium text-gray-900 dark:text-gray-100">
+                              {contest}
+                            </span>
                           </div>
                         ))}
                       </div>
                     ) : (
                       <div className="text-gray-600 dark:text-gray-400">
-                        No projects listed yet.
+                        No contests listed yet.
                       </div>
                     )}
-                  </div>
-
-                  {/* Submission Requirements */}
-                  <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/10 dark:to-purple-900/10 rounded-2xl p-8 border border-blue-200 dark:border-blue-800">
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
-                      Submission Requirements
-                    </h3>
-
-                    <div className="grid md:grid-cols-2 gap-8">
-                      <div>
-                        <h4 className="font-semibold mb-3 text-red-600 dark:text-red-400">
-                          Mandatory Submissions:
-                        </h4>
-                        <ul className="space-y-2">
-                          {isArr<string>(
-                            trackDetails.outcome?.submissionRequirements?.mandatory
-                          ) &&
-                            trackDetails.outcome!.submissionRequirements!.mandatory!.map(
-                              (req, i) => (
-                                <li key={`mand-${i}`} className="flex items-center space-x-2">
-                                  <div className="w-2 h-2 bg-red-500 rounded-full" />
-                                  <span className="text-gray-700 dark:text-gray-300">
-                                    {req}
-                                  </span>
-                                </li>
-                              )
-                            )}
-                        </ul>
-                      </div>
-
-                      <div>
-                        <h4 className="font-semibold mb-3 text-green-600 dark:text-green-400">
-                          Preferred Submissions:
-                        </h4>
-                        <ul className="space-y-2">
-                          {isArr<string>(
-                            trackDetails.outcome?.submissionRequirements?.preferred
-                          ) &&
-                            trackDetails.outcome!.submissionRequirements!.preferred!.map(
-                              (req, i) => (
-                                <li key={`pref-${i}`} className="flex items-center space-x-2">
-                                  <div className="w-2 h-2 bg-green-500 rounded-full" />
-                                  <span className="text-gray-700 dark:text-gray-300">
-                                    {req}
-                                  </span>
-                                </li>
-                              )
-                            )}
-                        </ul>
-                      </div>
-                    </div>
-
-                    {/* LinkedIn Post Requirements */}
-                    {isArr<string>(
-                      trackDetails.outcome?.submissionRequirements?.linkedinPost
-                        ?.shouldInclude
-                    ) &&
-                      (trackDetails.outcome?.submissionRequirements?.linkedinPost
-                        ?.shouldInclude?.length ?? 0) > 0 && (
-                        <div className="mt-6 p-4 bg-white/50 dark:bg-gray-800/50 rounded-xl">
-                          <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center space-x-2">
-                            <span aria-hidden>📱</span>
-                            <span>LinkedIn Post Requirements:</span>
-                          </h4>
-                          <ul className="space-y-2">
-                            {trackDetails.outcome!.submissionRequirements!.linkedinPost!.shouldInclude!.map(
-                              (req, i) => (
-                                <li key={`li-${i}`} className="flex items-center space-x-2">
-                                  <CheckCircleIcon className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                                  <span className="text-gray-700 dark:text-gray-300">
-                                    {req}
-                                  </span>
-                                </li>
-                              )
-                            )}
-                          </ul>
-                        </div>
-                      )}
                   </div>
                 </div>
               )}
@@ -1272,11 +1191,11 @@ export function Bootcamp() {
           {/* DSA Bootcamp Stats */}
           {DSA_BOOTCAMP_MODE && (
             <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-              {[
+              {[ 
                 { label: "Problems", value: "100+", icon: "🎯" },
                 { label: "Weeks", value: "4", icon: "📅" },
                 { label: "Topics", value: "15+", icon: "📚" },
-                { label: "Projects", value: "4", icon: "🏆" },
+                { label: "Contests", value: "4", icon: "🏆" },
               ].map((stat) => (
                 <div
                   key={stat.label}

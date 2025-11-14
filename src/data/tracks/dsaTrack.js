@@ -213,7 +213,7 @@ export const dsaTrack = {
               description: 'Learn sliding window technique'
             }
           ],
-          project: {
+          contest: {
             title: 'Solve 20 Array Problems',
             description: 'Master array manipulation and optimization techniques',
             coreFeatures: [
@@ -708,12 +708,11 @@ export const dsaTrack = {
   ],
   
   outcome: {
-    projects: [
-      '100+ LeetCode problems solved (Easy, Medium, Hard)',
-      'GitHub repository with all solutions and explanations',
-      'Participation in 2+ online coding contests',
-      'Complete DSA interview preparation',
-      'Portfolio showcasing problem-solving journey'
+    contests: [
+      'LeetCode Weekly Contest 350',
+      'Codeforces Round 850 (Div. 2)',
+      'CodeChef Starters 100',
+      'AtCoder Beginner Contest 300'
     ],
     
     submissionRequirements: {
