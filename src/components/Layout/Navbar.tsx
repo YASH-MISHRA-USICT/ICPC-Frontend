@@ -75,9 +75,9 @@ export function Navbar() {
 
   const navItems = [
     { name: 'Bootcamp', href: '/bootcamp', icon: Home },
-    { name: 'Dashboard', href: '/dashboard', icon: Code2 },
     { name: 'Tasks', href: '/tasks', icon: BookOpen },
     { name: 'Leaderboard', href: '/leaderboard', icon: Trophy },
+    { name: 'Forum', href: '/forum', icon: MessageSquare },
     { name: 'Resources', href: '/resources', icon: BookOpen },
     { name: 'Videos', href: '/videos', icon: PlayIcon },
   ];
