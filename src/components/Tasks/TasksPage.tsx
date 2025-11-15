@@ -26,7 +26,7 @@ interface Task {
   is_active: boolean;
   team_id?: string;
   type: 'individual' | 'team';
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  difficulty: 'Easy' | 'Medium' | 'Hard';
   track?: string;
   requirements?: string[];
   category?: string;
@@ -321,11 +321,11 @@ export function TasksPage() {
                     
                     {/* Difficulty Badge */}
                     <span className={`px-3 py-1.5 rounded-full text-sm font-medium border ${
-                      task.difficulty === 'beginner' ? 'bg-green-50 text-green-600 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700' :
-                      task.difficulty === 'intermediate' ? 'bg-yellow-50 text-yellow-600 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700' :
+                      task.difficulty === 'Easy' ? 'bg-green-50 text-green-600 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700' :
+                      task.difficulty === 'Medium' ? 'bg-yellow-50 text-yellow-600 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700' :
                       'bg-red-50 text-red-600 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700'
                     }`}>
-                      {task.difficulty === 'beginner' ? '🟢 Beginner' : task.difficulty === 'intermediate' ? '🟡 Intermediate' : '🔴 Advanced'}
+                      {task.difficulty === 'Easy' ? '🟢 Easy' : task.difficulty === 'Medium' ? '🟡 Medium' : '🔴 Hard'}
                     </span>
 
                     {/* Active/Inactive Badge */}
